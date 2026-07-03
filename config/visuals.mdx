@@ -1,0 +1,337 @@
+---
+title: "Visuals Configuration: Camera, Particles, Effects"
+sidebarTitle: "Visuals"
+description: "All bc_* config variables controlling BestClient's visual features: camera effects, particle systems, tee effects, aspect ratio, and ReShade integration."
+---
+
+BestClient ships with a rich set of visual enhancements — from subtle UI animations and eye-comfort overlays to full particle systems and tee deformation effects. Every option listed here can be changed live from the in-game console or configured through the BestClient settings UI. All variables are persisted to `settings_ddnet.cfg` in your `$USERDIR`.
+
+---
+
+## Aspect Ratio
+
+Control the custom aspect ratio feature that lets you render at a non-native ratio such as 4:3 or 5:4.
+
+<ParamField query="bc_custom_aspect_ratio_mode" type="int" default="-1">
+  Aspect ratio mode. `-1` = legacy auto, `0` = off, `1` = preset, `2` = custom.
+</ParamField>
+
+<ParamField query="bc_custom_aspect_ratio_apply_mode" type="int" default="1">
+  Where the custom aspect ratio is applied. `0` = game viewport only, `1` = full screen, `2` = game viewport without HUD. Range: `0`–`2`.
+</ParamField>
+
+<ParamField query="bc_custom_aspect_ratio" type="int" default="0">
+  Aspect ratio value multiplied by 100. `0` = off. Common presets: `125` = 5:4, `133` = 4:3, `150` = 3:2. Accepts any value from `0` to `1000`.
+</ParamField>
+
+<ParamField query="bc_custom_aspect_ratio_num" type="int" default="0">
+  Custom aspect ratio numerator (width component). `0` = unset. Range: `0`–`100000`.
+</ParamField>
+
+<ParamField query="bc_custom_aspect_ratio_den" type="int" default="0">
+  Custom aspect ratio denominator (height component). `0` = unset. Range: `0`–`100000`.
+</ParamField>
+
+---
+
+## Cinematic Camera
+
+<ParamField query="bc_cinematic_camera" type="int" default="0">
+  Enable smooth cinematic camera movement when using spectator free-view. `0` = off, `1` = on.
+</ParamField>
+
+---
+
+## Particle Systems
+
+### 3D Particles
+
+<Accordion title="3D Particle variables (18 variables)">
+
+<ParamField query="bc_3d_particles" type="int" default="0">
+  Toggle the 3D particle system. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_3d_particles_type" type="int" default="1">
+  Particle shape. `1` = Cube, `2` = Heart, `3` = Mixed. Range: `1`–`3`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_count" type="int" default="60">
+  Total number of 3D particles rendered at once. Range: `1`–`200`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_size_min" type="int" default="3">
+  Minimum particle size. Range: `2`–`200`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_size_max" type="int" default="8">
+  Maximum particle size. Range: `2`–`200`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_speed" type="int" default="18">
+  Base movement speed of 3D particles. Range: `1`–`500`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_depth" type="int" default="300">
+  Depth range over which particles are distributed. Range: `10`–`1000`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_alpha" type="int" default="35">
+  Opacity of 3D particles in percent. Range: `1`–`100`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_fade_in_ms" type="int" default="400">
+  Time in milliseconds for particles to fade in when they spawn. Range: `1`–`5000`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_fade_out_ms" type="int" default="400">
+  Time in milliseconds for particles to fade out before despawning. Range: `1`–`5000`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_push_radius" type="int" default="120">
+  Radius around the local player that pushes nearby particles away. Range: `0`–`1000`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_push_strength" type="int" default="120">
+  Strength of the player push force applied to nearby particles. Range: `0`–`2000`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_collide" type="int" default="1">
+  Whether 3D particles collide with each other. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_3d_particles_view_margin" type="int" default="120">
+  Extra margin in units outside the visible area before a particle is culled. Range: `0`–`1000`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_color_mode" type="int" default="1">
+  Color mode for 3D particles. `1` = custom static color, `2` = random per-particle color.
+</ParamField>
+
+<ParamField query="bc_3d_particles_color" type="color" default="4294967295">
+  ARGB color used when `bc_3d_particles_color_mode` is `1` (custom). Supports alpha channel.
+</ParamField>
+
+<ParamField query="bc_3d_particles_glow" type="int" default="0">
+  Enable a glow halo around each 3D particle. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_3d_particles_glow_alpha" type="int" default="35">
+  Opacity of the particle glow in percent. Range: `1`–`100`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_glow_offset" type="int" default="2">
+  Size offset of the glow halo relative to the particle. Range: `1`–`20`.
+</ParamField>
+
+</Accordion>
+
+### Crystal Laser
+
+<ParamField query="bc_crystal_laser" type="int" default="0">
+  Render rifle and shotgun lasers with crystal shards and an icy glow effect. `0` = off, `1` = on.
+</ParamField>
+
+---
+
+## Tee Effects
+
+### Jelly Tee
+
+<ParamField query="bc_jelly_tee" type="int" default="0">
+  Enable jelly-like deformation on your own tee when it accelerates or changes direction. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_jelly_tee_others" type="int" default="0">
+  Apply jelly tee deformation to other players as well. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_jelly_tee_strength" type="int" default="500">
+  Intensity of the jelly deformation effect. Range: `0`–`1000`.
+</ParamField>
+
+<ParamField query="bc_jelly_tee_duration" type="int" default="30">
+  How many frames the deformation persists after an impulse. Range: `1`–`500`.
+</ParamField>
+
+### Motion Blur
+
+<ParamField query="bc_motion_blur" type="int" default="0">
+  Enable motion blur by blending the current frame with the previous one. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_motion_blur_strength" type="int" default="50">
+  Blend strength as a percentage of the previous frame retained. Range: `0`–`95`.
+</ParamField>
+
+### Player Trail
+
+<ParamField query="bc_trail" type="int" default="0">
+  Enable a visual trail that follows your tee as it moves. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_trail_others" type="int" default="0">
+  Show the trail effect on other players too. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_trail_mode" type="int" default="0">
+  Trail particle style. `0` = grenade, `1` = invisible, `2` = ninja.
+</ParamField>
+
+### Flying Name Plates
+
+<ParamField query="bc_flying_name_plates" type="int" default="0">
+  Render name plates as kites tethered to players, drifting with movement. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_flying_name_plates_lift" type="int" default="28">
+  Additional upward offset applied to flying name plates. Range: `0`–`120`.
+</ParamField>
+
+<ParamField query="bc_flying_name_plates_drag" type="int" default="52">
+  How far name plates trail behind the player's movement direction. Range: `0`–`200`.
+</ParamField>
+
+<ParamField query="bc_flying_name_plates_follow" type="int" default="40">
+  How quickly flying name plates catch up to their target position. Range: `1`–`100`.
+</ParamField>
+
+---
+
+## Media Background
+
+<ParamField query="bc_menu_media_background" type="int" default="0">
+  Enable a custom image or video background in the offline main menu. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_game_media_background" type="int" default="0">
+  Enable a custom media background rendered behind the game world. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_menu_media_background_path" type="string" default="">
+  Absolute or relative file path to the custom media background file used in menus.
+</ParamField>
+
+<ParamField query="bc_game_media_background_offset" type="int" default="0">
+  Controls how much the in-game background is anchored to the map versus the screen. `0` = fully screen-fixed, `100` = fully map-fixed. Range: `0`–`100`.
+</ParamField>
+
+---
+
+## UI Visuals
+
+### Eye Comfort
+
+<ParamField query="bc_eye_comfort" type="int" default="0">
+  Render a warm yellow overlay across the entire screen to reduce eye strain. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_eye_comfort_strength" type="int" default="35">
+  Intensity of the eye-comfort overlay. Higher values are warmer and dimmer. Range: `0`–`100`.
+</ParamField>
+
+### Scoreboard & Tab
+
+<ParamField query="bc_scoreboard_team_gradients" type="int" default="1">
+  Render scoreboard team-color rows with a left-to-right gradient fade. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_show_points_in_tab" type="int" default="0">
+  Show each player's DDNet points in the scoreboard, between their name and clan. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_esc_player_list" type="int" default="0">
+  Display a player list on the Game tab of the ESC pause menu. `0` = off, `1` = on.
+</ParamField>
+
+### Emoticons
+
+<ParamField query="bc_emoticon_shadow" type="int" default="0">
+  Draw a drop shadow behind emoticons shown above tees. `0` = off, `1` = on.
+</ParamField>
+
+### Nameplates
+
+<ParamField query="bc_nameplate_gradient" type="int" default="0">
+  Apply a gradient to nameplate text using the tee's body and feet colors. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_nameplate_voice_offset_x" type="int" default="0">
+  Horizontal pixel offset for the voice-activity icon in nameplates. Range: `-400`–`400`.
+</ParamField>
+
+<ParamField query="bc_nameplate_voice_offset_y" type="int" default="0">
+  Vertical pixel offset for the voice-activity icon in nameplates. Range: `-400`–`400`.
+</ParamField>
+
+---
+
+## Animations
+
+<Accordion title="Animation variables (16 variables)">
+
+<ParamField query="bc_animations" type="int" default="1">
+  Master toggle for all BestClient UI animations. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_module_ui_reveal_animation" type="int" default="1">
+  Animate module settings panels sliding into view. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_module_ui_reveal_animation_ms" type="int" default="180">
+  Duration of the module reveal animation in milliseconds. Range: `1`–`500`.
+</ParamField>
+
+<ParamField query="bc_ingame_menu_animation" type="int" default="0">
+  Animate the in-game ESC menu when it opens or closes. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_ingame_menu_animation_ms" type="int" default="220">
+  Duration of the ESC menu animation in milliseconds. Range: `1`–`500`.
+</ParamField>
+
+<ParamField query="bc_chat_animation" type="int" default="1">
+  Animate chat messages as they appear. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_chat_animation_ms" type="int" default="300">
+  Duration of the chat message animation in milliseconds. Range: `1`–`500`.
+</ParamField>
+
+<ParamField query="bc_chat_animation_type" type="int" default="3">
+  Animation style for chat messages. Valid values: `1`–`4`.
+</ParamField>
+
+<ParamField query="bc_chat_open_animation" type="int" default="1">
+  Animate the chat panel sliding open. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_chat_open_animation_ms" type="int" default="220">
+  Duration of the chat open animation in milliseconds. Range: `1`–`500`.
+</ParamField>
+
+<ParamField query="bc_chat_typing_animation" type="int" default="1">
+  Show a typing animation indicator in chat. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_chat_typing_animation_ms" type="int" default="180">
+  Duration of the chat typing animation in milliseconds. Range: `1`–`500`.
+</ParamField>
+
+<ParamField query="bc_killfeed_animation" type="int" default="1">
+  Animate killfeed entries as they enter and leave the screen. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_killfeed_animation_ms" type="int" default="200">
+  Duration of the killfeed animation in milliseconds. Range: `1`–`500`.
+</ParamField>
+
+<ParamField query="bc_main_menu_animation" type="int" default="1">
+  Animate main menu button hover states. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_main_menu_animation_speed" type="int" default="12">
+  Speed of the main menu hover animation. Range: `1`–`50`.
+</ParamField>
+
+</Accordion>

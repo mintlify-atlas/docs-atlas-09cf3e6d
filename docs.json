@@ -1,72 +1,107 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "BestClient",
+  "theme": "aspen",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
-  },
-  "favicon": "/favicon.svg",
-  "navigation": {
-    "pages": [
-      {
-        "group": "Getting Started",
-        "pages": [
-          "index",
-          "quickstart"
-        ]
-      }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "primary": "#5B6CF9",
+    "light": "#8B9BFF",
+    "dark": "#3A4BD6"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
     "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
+      "type": "github",
+      "href": "https://github.com/BestProjectTeam/BestClient"
     }
-  },
-  "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
-    ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "github": "https://github.com/BestProjectTeam/BestClient"
     }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Getting Started",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "introduction",
+              "installation",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Building from Source",
+            "pages": [
+              "building/prerequisites",
+              "building/build-guide"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Features",
+        "groups": [
+          {
+            "group": "Visuals",
+            "pages": [
+              "features/visuals/camera-and-fov",
+              "features/visuals/particle-systems",
+              "features/visuals/tee-effects",
+              "features/visuals/ui-animations"
+            ]
+          },
+          {
+            "group": "Gameplay & Input",
+            "pages": [
+              "features/gameplay/input-modes",
+              "features/gameplay/movement-tools",
+              "features/gameplay/hud-and-timers"
+            ]
+          },
+          {
+            "group": "Social & Utility",
+            "pages": [
+              "features/social/voice-chat",
+              "features/social/chat-media",
+              "features/social/client-indicator",
+              "features/social/streamer-mode"
+            ]
+          },
+          {
+            "group": "Editors & Tools",
+            "pages": [
+              "features/editors/components-editor",
+              "features/editors/hud-editor",
+              "features/editors/assets-editor"
+            ]
+          },
+          {
+            "group": "Shop & Fun",
+            "pages": [
+              "features/shop",
+              "features/fun-tab"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Configuration",
+        "groups": [
+          {
+            "group": "Configuration Reference",
+            "pages": [
+              "config/overview",
+              "config/visuals",
+              "config/input",
+              "config/voice-chat",
+              "config/hud",
+              "config/social-utility"
+            ]
+          }
+        ]
+      }
+    ]
   }
 }

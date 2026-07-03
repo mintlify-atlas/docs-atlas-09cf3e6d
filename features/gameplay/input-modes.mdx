@@ -1,0 +1,179 @@
+---
+title: "Input Modes: Fast Input, Delta, Best Input, Saiko+"
+sidebarTitle: "Input Modes"
+description: "BestClient offers four competitive input modes — Fast Input, Delta Input, Best Input, and Saiko+ — each with configurable latency compensation and smoothing."
+---
+
+BestClient ships a dedicated input-prediction system designed for competitive DDNet play. Four distinct modes let you tune exactly how your inputs are sent to the server: the classic **Fast Input** mode for low-overhead prediction, **Delta Input** for a configurable tick-ahead nudge, **Best Input** for a full pipeline with smoothing and latency compensation, and **Saiko+** for an alternative offset approach. All modes are controlled through a single master variable with per-mode sub-settings, and every value lives in your DDNet config file so presets are easy to share or version-control.
+
+---
+
+## Master Mode Setting
+
+<ParamField query="bc_fast_input_mode" type="int" default="0">
+  Selects the active input mode. Accepted values:
+  - `0` — Fast Input (default low-latency prediction)
+  - `1` — Delta Input
+  - `3` — Best Input
+  - `4` — Saiko+
+
+  The legacy gamma mode (value `2`) is no longer active and is mapped internally to Best Input for backward compatibility.
+</ParamField>
+
+---
+
+## Mode Comparison
+
+| Mode | Variable Value | Key Benefit | Additional Settings |
+|---|---|---|---|
+| Fast Input | `0` | Minimal overhead, direct prediction | Auto Margin |
+| Delta Input | `1` | Fixed tick-ahead offset for your tee | `bc_fast_input_delta_input`, `bc_delta_input_others` |
+| Best Input | `3` | Full pipeline: offset + smoothing + latency comp + interpolation | `bc_best_input_*` suite |
+| Saiko+ | `4` | Alternative offset algorithm | `bc_saiko_plus_amount`, `bc_saiko_plus_others` |
+
+---
+
+## Fast Input
+
+Fast Input (`bc_fast_input_mode 0`) is the baseline mode. It applies BestClient's standard prediction margin with no additional offset or smoothing. Use **Auto Margin** to let the client self-tune in real time.
+
+<ParamField query="bc_fast_input_auto_margin" type="int" default="0">
+  When enabled (`1`), automatically adjusts the prediction margin in real time based on fast input, measured latency, and connection stability. Recommended for players on variable-ping connections.
+</ParamField>
+
+---
+
+## Delta Input
+
+Delta Input shifts your tee's predicted position forward by a fixed number of 0.01-tick units, giving a consistent feel regardless of network jitter.
+
+<ParamField query="bc_fast_input_delta_input" type="int" default="0">
+  Delta offset for your own tee, expressed in **0.01 ticks**. Range: `0–500` (0.00 – 5.00 ticks). A value of `100` equals a 1-tick forward nudge.
+</ParamField>
+
+<ParamField query="bc_delta_input_others" type="int" default="0">
+  When set to `1`, applies the same delta offset to the rendered positions of all other tees on the server, keeping visual consistency in co-op scenarios.
+</ParamField>
+
+---
+
+## Saiko+
+
+Saiko+ is an alternative offset mode inspired by competitive movement feel. Like Delta Input, it uses a tick-fraction amount but applies a different internal algorithm.
+
+<ParamField query="bc_saiko_plus_amount" type="int" default="0">
+  Saiko+ offset for your own tee, in **0.01 ticks**. Range: `0–500` (0.00 – 5.00 ticks).
+</ParamField>
+
+<ParamField query="bc_saiko_plus_others" type="int" default="0">
+  When set to `1`, extends the Saiko+ offset to other tees' rendered positions.
+</ParamField>
+
+---
+
+## Best Input
+
+Best Input is BestClient's most advanced mode, combining a configurable prediction offset with smoothing, latency compensation, and a choice of interpolation curve. Use preset `3` (Auto) to let the client calculate an optimal offset automatically, or set preset `0` (Custom) to dial in every parameter by hand.
+
+<ParamField query="bc_best_input_preset" type="int" default="0">
+  Selects the Best Input preset:
+  - `0` — Custom (all sub-settings are read from your config)
+  - `3` — Auto (the client derives the offset from current conditions)
+
+  Legacy preset values are preserved for config compatibility.
+</ParamField>
+
+<ParamField query="bc_best_input_offset" type="int" default="0">
+  Prediction offset for Best Input in **0.01 ticks**. Range: `0–1000` (0.00 – 10.00 ticks). Active when preset is set to Custom (`0`).
+</ParamField>
+
+<ParamField query="bc_best_input_smoothing" type="int" default="0">
+  Smoothing applied to the predicted position, as a percentage. Range: `0–100`. Higher values reduce jitter at the cost of snappiness.
+</ParamField>
+
+<ParamField query="bc_best_input_latency_comp" type="int" default="0">
+  Latency compensation factor as a percentage. Range: `0–50`. Offsets input prediction by a fraction of your measured round-trip time.
+</ParamField>
+
+<ParamField query="bc_best_input_interpolation" type="int" default="1">
+  Interpolation curve used for Best Input position blending:
+  - `1` — Linear
+  - `2` — Cubic
+  - `3` — Smooth (smoothstep)
+</ParamField>
+
+<ParamField query="bc_best_input_others" type="int" default="0">
+  When set to `1`, applies Best Input prediction to other tees' rendered positions.
+</ParamField>
+
+---
+
+## Snap Tap
+
+Snap Tap prevents conflicting simultaneous left/right directional inputs from both registering, which can happen with fast keyboard switching or rollover. This mirrors hardware Snap Tap features found on some gaming keyboards.
+
+<ParamField query="bc_snap_tap" type="int" default="0">
+  Enables Snap Tap (`1`). When active, if both left and right movement inputs are held at the same time, the most recently pressed direction wins exclusively.
+</ParamField>
+
+<ParamField query="bc_snap_tap_delay" type="int" default="0">
+  Delay in milliseconds before the direction switch takes effect. Range: `0–200`. Set to `0` to switch instantly with no buffer.
+</ParamField>
+
+---
+
+## Config Examples
+
+<Tabs>
+  <Tab title="Best Input (Auto)">
+    ```cfg
+    # Best Input with auto preset and cubic interpolation
+    bc_fast_input_mode 3
+    bc_best_input_preset 3
+    bc_best_input_interpolation 2
+    ```
+  </Tab>
+  <Tab title="Best Input (Custom)">
+    ```cfg
+    # Best Input with manually tuned offset, smoothing, and latency comp
+    bc_fast_input_mode 3
+    bc_best_input_preset 0
+    bc_best_input_offset 200
+    bc_best_input_smoothing 30
+    bc_best_input_latency_comp 20
+    bc_best_input_interpolation 3
+    bc_best_input_others 1
+    ```
+  </Tab>
+  <Tab title="Delta Input">
+    ```cfg
+    # Delta Input with a 2-tick forward nudge applied to all tees
+    bc_fast_input_mode 1
+    bc_fast_input_delta_input 200
+    bc_delta_input_others 1
+    ```
+  </Tab>
+  <Tab title="Saiko+">
+    ```cfg
+    # Saiko+ at 1.5 ticks
+    bc_fast_input_mode 4
+    bc_saiko_plus_amount 150
+    bc_saiko_plus_others 0
+    ```
+  </Tab>
+  <Tab title="Fast Input + Auto Margin">
+    ```cfg
+    # Fast Input with automatic prediction margin
+    bc_fast_input_mode 0
+    bc_fast_input_auto_margin 1
+    ```
+  </Tab>
+</Tabs>
+
+<Note>
+  The legacy `bc_fast_input_gamma_input` and `bc_gamma_input_others` variables still exist in config files for backward compatibility but have no effect — the gamma mode is internally aliased to Best Input.
+</Note>
+
+<Tip>
+  If you are unsure where to start, try **Best Input Auto** (`bc_fast_input_mode 3`, `bc_best_input_preset 3`) with cubic interpolation (`bc_best_input_interpolation 2`). The auto preset continuously recalculates the optimal offset so you do not need to retune after server changes.
+</Tip>

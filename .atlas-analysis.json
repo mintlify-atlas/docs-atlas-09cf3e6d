@@ -1,0 +1,125 @@
+{
+  "projectType": "saas",
+  "projectName": "BestClient",
+  "projectDescription": "A custom DDNet client fork focused on comfort, deep customization, native tooling, and competitive quality-of-life features for DDNet/Teeworlds players.",
+  "theme": "aspen",
+  "primaryColor": "#5B6CF9",
+  "lightColor": "#8B9BFF",
+  "darkColor": "#3A4BD6",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Getting Started",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "introduction",
+              "installation",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Building from Source",
+            "pages": [
+              "building/prerequisites",
+              "building/build-guide"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Features",
+        "groups": [
+          {
+            "group": "Visuals",
+            "pages": [
+              "features/visuals/camera-and-fov",
+              "features/visuals/particle-systems",
+              "features/visuals/tee-effects",
+              "features/visuals/ui-animations"
+            ]
+          },
+          {
+            "group": "Gameplay & Input",
+            "pages": [
+              "features/gameplay/input-modes",
+              "features/gameplay/movement-tools",
+              "features/gameplay/hud-and-timers"
+            ]
+          },
+          {
+            "group": "Social & Utility",
+            "pages": [
+              "features/social/voice-chat",
+              "features/social/chat-media",
+              "features/social/client-indicator",
+              "features/social/streamer-mode"
+            ]
+          },
+          {
+            "group": "Editors & Tools",
+            "pages": [
+              "features/editors/components-editor",
+              "features/editors/hud-editor",
+              "features/editors/assets-editor"
+            ]
+          },
+          {
+            "group": "Shop & Fun",
+            "pages": [
+              "features/shop",
+              "features/fun-tab"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Configuration",
+        "groups": [
+          {
+            "group": "Configuration Reference",
+            "pages": [
+              "config/overview",
+              "config/visuals",
+              "config/input",
+              "config/voice-chat",
+              "config/hud",
+              "config/social-utility"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "280+ bc_* config variables for granular customization",
+    "Native visual stack: Camera Drift, Dynamic FOV, Cinematic Camera, Jelly Tee, Afterimage, Motion Blur, Player Trail, Crystal Laser, Magic/3D Particles",
+    "Advanced input system: Fast Input, Delta Input, Best Input, Saiko+, Snap Tap, 45 Degrees, Small Sens",
+    "Integrated Voice Chat with VAD, proximity chat, moderation, and per-player volume control",
+    "Chat Media with inline image/GIF previews and fullscreen viewer",
+    "Client Indicator for identifying BestClient users in-game and in browser",
+    "HUD Editor for live drag-and-drop module placement over gameplay",
+    "Components Editor with 52 toggle entries, staged apply, and restart prompts",
+    "Assets Editor for mixing and exporting custom asset packs",
+    "ReShade runtime integration with live shader controls",
+    "Music Player with visualizer, HUD widget, and cover art",
+    "Admin Panel with fast actions, RCON log, tuning controls, and voice moderation",
+    "In-client Shop for entities, skins, emoticons, particles, HUD, audio, and more",
+    "Fun Tab with 14 built-in mini-games",
+    "Speedrun Timer, Finish Prediction, Auto Team Lock, Hook Combo popups",
+    "Streamer Mode with configurable flags to hide server IPs, names, and chat"
+  ],
+  "publicApiSurface": [
+    "bc_* config variables (276 entries in config_variables_bestclient.h)",
+    "CBestClient component (toggle45degrees, togglesmallsens, toggledeepfly, togglecinematiccamera, saverollback console commands)",
+    "CVoiceChat component (VoiceModAuth, VoiceModMute, VoiceModRefresh, IsClientTalking, GetClientVolumePercent, SetClientVolumePercent)",
+    "CMusicPlayer component (GetNowPlayingInfo, GetHudThemeColor, HudReservation, RenderHudEditor)",
+    "CHudEditor component (Activate, Deactivate, IsActive)",
+    "CAdminPanel component (IsActive, OnRconLine)",
+    "CFastActions component (ConOpenFa, ConAddFa, ConRemoveFa, ConFaExecuteHover console commands)",
+    "EStreamerFlags bitmask (STREAMER_HIDE_SERVER_IP, STREAMER_HIDE_CHAT, STREAMER_HIDE_OWN_NAME, etc.)",
+    "bc_disabled_components_mask_lo / bc_disabled_components_mask_hi (Components editor bitmask)",
+    "storage.cfg path configuration ($USERDIR, $DATADIR, $CURRENTDIR)"
+  ]
+}

@@ -1,0 +1,193 @@
+---
+title: "Integrated Voice Chat with VAD and Proximity Support"
+sidebarTitle: "Voice Chat"
+description: "BestClient includes built-in voice chat with voice activity detection, proximity radius, per-player volume, team-only mode, and in-game moderation tools."
+---
+
+BestClient ships a fully integrated voice chat system built on the Opus audio codec. Rather than relying on an external application, voice is routed through a BestClient-operated relay server — the connection address is resolved automatically via the `bc_voice_chat_server_address` setting. Once connected, players are placed into a room tied to their current game server and team, enabling hands-free coordination without ever leaving the client.
+
+<Note>
+  The default value for `bc_voice_chat_server_address` is `"managed"`, which tells BestClient to resolve the relay endpoint from BestClient-run infrastructure automatically. You only need to change this if you are self-hosting a compatible voice relay or were given an alternate address by the BestClient team.
+</Note>
+
+---
+
+## Enabling Voice Chat
+
+<ParamField path="bc_voice_chat_enable" type="int" default="1">
+  Master toggle for the integrated voice chat system. Set to `1` to enable or `0` to disable entirely. When disabled, no audio devices are opened and no network connections are made.
+</ParamField>
+
+<ParamField path="bc_voice_chat_activation_mode" type="int" default="1">
+  Controls how voice transmission is triggered.
+
+  - `0` — **Automatic / VAD**: the client transmits whenever the microphone input exceeds the configured activity threshold.
+  - `1` — **Push-to-Talk**: voice is only transmitted while the bound push-to-talk key is held.
+</ParamField>
+
+---
+
+## Voice Activity Detection (VAD)
+
+When `bc_voice_chat_activation_mode` is set to `0`, the client uses energy-based voice activity detection to decide when to transmit. Two settings control its sensitivity and tail behaviour.
+
+<ParamField path="bc_voice_chat_vad_threshold" type="int" default="5" min="0" max="100">
+  The microphone energy threshold (as a percentage) that must be exceeded before automatic transmission begins. Lower values make the VAD more sensitive to quiet speech; higher values require louder input before triggering.
+</ParamField>
+
+<ParamField path="bc_voice_chat_vad_release_delay_ms" type="int" default="150" min="0" max="1000">
+  How long (in milliseconds) the VAD continues transmitting after microphone energy drops below the threshold. A small delay (100–200 ms) prevents clipping the end of words.
+</ParamField>
+
+---
+
+## Audio Settings
+
+<ParamField path="bc_voice_chat_volume" type="int" default="100" min="0" max="200">
+  Global playback volume for incoming voice, expressed as a percentage. Values above `100` amplify remote players beyond their recorded level.
+</ParamField>
+
+<ParamField path="bc_voice_chat_mic_gain" type="int" default="100" min="0" max="300">
+  Software gain applied to your microphone input before encoding, in percent. Increase this if your microphone is quiet; decrease it to prevent clipping.
+</ParamField>
+
+<ParamField path="bc_voice_chat_bitrate" type="int" default="96" min="6" max="128">
+  Opus encoding bitrate in kilobits per second. Higher values improve audio quality at the cost of slightly more bandwidth. `96` kbps is a good balance for voice.
+</ParamField>
+
+<ParamField path="bc_voice_chat_input_device" type="int" default="-1" min="-1" max="64">
+  Index of the audio input device to use for capture. `-1` selects the system default microphone. Run the in-client voice settings panel to enumerate available device indices.
+</ParamField>
+
+<ParamField path="bc_voice_chat_output_device" type="int" default="-1" min="-1" max="64">
+  Index of the audio output device used for playback. `-1` selects the system default output. Useful for routing voice to headphones while game audio plays through speakers.
+</ParamField>
+
+---
+
+## Mute Controls
+
+<ParamField path="bc_voice_chat_mic_muted" type="int" default="0">
+  When set to `1`, your microphone is muted and no audio is transmitted. Other players will not see you as talking. Persisted across sessions.
+</ParamField>
+
+<ParamField path="bc_voice_chat_headphones_muted" type="int" default="0">
+  When set to `1`, all incoming voice audio is silenced on your end. You can still transmit while headphone mute is active.
+</ParamField>
+
+<ParamField path="bc_voice_chat_mic_check" type="int" default="0">
+  Enables microphone loopback — your own captured and encoded audio is played back to you locally. Useful for testing microphone quality and gain settings without disturbing other players.
+</ParamField>
+
+---
+
+## Scope and Team Filtering
+
+<ParamField path="bc_voice_chat_ingame_only" type="int" default="0">
+  When enabled (`1`), voice transmission and playback are only active while the game window has focus. Switching to another application suspends the voice pipeline.
+</ParamField>
+
+<ParamField path="bc_voice_chat_use_team0" type="int" default="0">
+  Forces voice chat to operate on team `0` (the global channel) regardless of which in-game team you are currently on. Useful for servers where team assignments don't reflect desired voice groups.
+</ParamField>
+
+<ParamField path="bc_voice_chat_enable_your_group" type="int" default="0">
+  Only meaningful when `bc_voice_chat_use_team0` is active. When `1`, your own in-game team is additionally included in voice transmit and playback alongside team 0, so teammates can still hear each other.
+</ParamField>
+
+---
+
+## Proximity Voice
+
+BestClient can restrict voice to players within a configurable tile radius, simulating positional proximity without requiring server-side support.
+
+<ParamField path="bc_voice_chat_radius_enabled" type="int" default="0">
+  Enables the client-side proximity filter. When active, only players within `bc_voice_chat_radius_tiles` tiles of your character will be heard (or heard by you).
+</ParamField>
+
+<ParamField path="bc_voice_chat_radius_tiles" type="int" default="25" min="1" max="500">
+  The proximity radius in game tiles when the radius filter is enabled. One tile equals 32 world units. The default of `25` tiles covers a comfortable conversational range.
+</ParamField>
+
+---
+
+## UI & Name Plate Integration
+
+<ParamField path="bc_voice_chat_nameplate_icon" type="int" default="1">
+  When enabled, a microphone icon appears in the name plate above any player who is currently transmitting voice. Disable to keep name plates clean.
+</ParamField>
+
+### HUD Positioning
+
+The voice HUD elements (talking indicator and mute status icons) can be repositioned using the BestClient HUD editor. Their positions and scale are stored in the following variables:
+
+<ParamField path="bc_hud_voice_hud_x" type="int" default="4" min="-1000" max="1000">
+  HUD editor X position for the voice talking indicator panel.
+</ParamField>
+
+<ParamField path="bc_hud_voice_hud_y" type="int" default="122" min="-1000" max="1000">
+  HUD editor Y position for the voice talking indicator panel.
+</ParamField>
+
+<ParamField path="bc_hud_voice_hud_scale" type="int" default="100" min="25" max="300">
+  Scale of the voice talking indicator panel as a percentage.
+</ParamField>
+
+<ParamField path="bc_hud_voice_mute_icons_x" type="int" default="136" min="-1000" max="1000">
+  HUD editor X position for the microphone and headphone mute status icons.
+</ParamField>
+
+<ParamField path="bc_hud_voice_mute_icons_y" type="int" default="0" min="-1000" max="1000">
+  HUD editor Y position for the mute status icons.
+</ParamField>
+
+<ParamField path="bc_hud_voice_mute_icons_scale" type="int" default="100" min="25" max="300">
+  Scale of the mute status icons as a percentage.
+</ParamField>
+
+---
+
+## Per-Player Mute and Volume Overrides
+
+These string settings store persistent per-player overrides that survive client restarts.
+
+<ParamField path="bc_voice_chat_muted_names" type="string" default='""'>
+  A comma-separated list of player names (case-insensitive) whose voice will be permanently silenced. Example: `"Alice, Bob"`. Names are matched against the in-game player name at the time of speaking.
+</ParamField>
+
+<ParamField path="bc_voice_chat_name_volumes" type="string" default='""'>
+  A comma-separated list of `name=value` pairs that set per-player volume overrides in percent. Example: `"Alice=150, Bob=50"` boosts Alice to 150% and lowers Bob to 50%.
+</ParamField>
+
+---
+
+## Voice Moderation
+
+Server operators can grant moderation privileges to trusted players through the voice system. The moderation interface is exposed via the `CVoiceChat` public API and the **Mod** tab of the in-game voice panel.
+
+### Authentication
+
+An admin initiates a session by calling `VoiceModAuth(key)` — or by entering their moderation key in the Mod tab. This sends a challenge-response authentication request to the voice relay. The result is reflected in these status accessors:
+
+| Method | Description |
+|--------|-------------|
+| `IsVoiceModAuthed()` | Returns `true` once the key has been verified by the relay. |
+| `IsVoiceModAuthFailed()` | Returns `true` if the relay rejected the key. |
+| `IsVoiceModAuthPending()` | Returns `true` while the challenge-response exchange is in flight. |
+
+The moderation key can be saved locally for convenience:
+
+<ParamField path="bc_voice_mod_key" type="string" default='""'>
+  The voice moderation key saved locally. If set, the Mod tab pre-fills the key field so re-authentication after a reconnect requires only one click.
+</ParamField>
+
+### Player List and Muting
+
+Once authenticated, the admin calls `VoiceModRefresh()` to request the current player list from the relay (internally `SendModPlayerListReq`). Each connected player is represented as an `SModPlayer` entry containing their session ID, in-game client ID, display name, and current mute state.
+
+To mute or unmute a specific player, call `VoiceModMute(SessionId, true/false)`. This sends a signed moderation packet to the relay; the change takes effect server-side and is reflected back in the next player-list refresh.
+
+```cfg
+# Save your moderation key so the Mod tab is pre-filled on reconnect
+bc_voice_mod_key "your-mod-key-here"
+```

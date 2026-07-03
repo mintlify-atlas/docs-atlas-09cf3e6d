@@ -1,0 +1,97 @@
+---
+title: "Client Indicator: Identify BestClient Users In-Game"
+sidebarTitle: "Client Indicator"
+description: "Client Indicator shows a badge next to BestClient users in name plates, the scoreboard, and the server browser, synced via a shared token service."
+---
+
+Client Indicator is a presence system that lets BestClient users recognize each other at a glance. When multiple BestClient players are on the same server, a small badge is rendered next to their name — visible in the name plate floating above their character, in the scoreboard (Tab), and in the server browser. Detection is handled peer-to-peer via a BestClient-operated UDP presence service: each client announces itself when it joins a server and the indicator syncs token state to ensure that only genuine BestClient installations are marked. The feature is always enabled — the toggle `bc_client_indicator` is permanently set to `1`.
+
+---
+
+## Display Options
+
+<ParamField path="bc_client_indicator" type="int" default="1">
+  Client indicator is always enabled. This variable is fixed at `1` and cannot be turned off; it exists so the settings panel can reflect the feature's active state.
+</ParamField>
+
+<ParamField path="bc_client_indicator_in_name_plate" type="int" default="1">
+  Show the BestClient badge in the floating name plate above each player's character. Set to `0` to hide the badge in name plates while still showing it elsewhere.
+</ParamField>
+
+<ParamField path="bc_client_indicator_in_name_plate_above_self" type="int" default="0">
+  When enabled (`1`), the badge also appears above your own character's name plate. By default this is off so your own indicator does not obstruct your view of your character.
+</ParamField>
+
+<ParamField path="bc_client_indicator_in_name_plate_size" type="int" default="30" min="-50" max="100">
+  Size adjustment for the badge rendered in name plates, expressed as a relative percentage offset from the base size. Negative values shrink the badge; positive values enlarge it.
+</ParamField>
+
+<ParamField path="bc_client_indicator_in_name_plate_dynamic" type="int" default="1">
+  When enabled (`1`), the badge position in the name plate adjusts dynamically — for example, shifting to avoid overlapping the player name or other icons as the name plate content changes.
+</ParamField>
+
+<ParamField path="bc_client_indicator_in_scoreboard" type="int" default="1">
+  Show the BestClient badge next to player names in the scoreboard (Tab screen). Useful for quickly spotting fellow BestClient users during gameplay.
+</ParamField>
+
+<ParamField path="bc_client_indicator_in_scoreboard_size" type="int" default="100" min="-50" max="100">
+  Size adjustment for the badge in the scoreboard, as a relative percentage offset from the base size.
+</ParamField>
+
+---
+
+## Name Plate Positioning
+
+Fine-tune exactly where the badge appears relative to the name plate text using pixel-level offsets.
+
+<ParamField path="bc_nameplate_client_indicator_offset_x" type="int" default="0" min="-400" max="400">
+  Horizontal offset (in screen units) for the client indicator badge within the name plate. Positive values shift the badge to the right; negative values shift it to the left.
+</ParamField>
+
+<ParamField path="bc_nameplate_client_indicator_offset_y" type="int" default="0" min="-400" max="400">
+  Vertical offset (in screen units) for the client indicator badge within the name plate. Positive values shift the badge downward; negative values shift it upward.
+</ParamField>
+
+---
+
+## Sync Service
+
+Client Indicator presence is coordinated through a BestClient-operated server. The following variables configure how the client connects to that infrastructure.
+
+<ParamField path="bc_client_indicator_server_address" type="string" default='"150.241.70.188:8778"'>
+  The UDP address of the BestClient presence server. The client sends signed UDP packets to this address to announce presence on a game server and to discover other BestClient users. Change this only if directed to by the BestClient team.
+</ParamField>
+
+<ParamField path="bc_client_indicator_browser_url" type="string" default='"https://150.241.70.188:8779/users.json"'>
+  HTTPS endpoint that returns a JSON snapshot of currently online BestClient users per server. This is polled by the server browser to show the indicator in server listings.
+</ParamField>
+
+<ParamField path="bc_client_indicator_token_url" type="string" default='"https://150.241.70.188:8779/token.json"'>
+  HTTPS endpoint used to bootstrap the shared token on first run or after a token expiry. The client fetches this URL to obtain a valid token before it can participate in presence announcements.
+</ParamField>
+
+<ParamField path="bc_client_indicator_shared_token" type="string" default='""'>
+  The shared authentication token used to sign outgoing UDP presence packets. This is populated automatically by the token bootstrap process and saved so that it persists across restarts. Manual edits are not normally necessary.
+</ParamField>
+
+<ParamField path="bc_client_indicator_secret_key" type="string" default='""'>
+  Developer secret key for advanced presence operations. Leave empty unless you are a BestClient developer or have been issued a key for testing purposes.
+</ParamField>
+
+---
+
+## Server Browser Integration
+
+Client Indicator integrates with the server browser to let you filter or spot servers where BestClient users are already playing.
+
+<ParamField path="bc_mastersrv" type="int" default="0">
+  When set to `1`, the server browser fetches its server list from the BestClient master server mirror instead of the default DDNet master servers. This mirror may surface servers that are more likely to have BestClient users online.
+</ParamField>
+
+<ParamField path="bc_auto_server_list_refresh" type="int" default="0">
+  Automatically refreshes the server browser list on a timer while a browser tab is open. Useful for spotting players joining or leaving servers in real time without pressing the refresh button manually.
+</ParamField>
+
+<ParamField path="bc_auto_server_list_refresh_seconds" type="int" default="10" min="1" max="300">
+  The interval in seconds between automatic server list refreshes when `bc_auto_server_list_refresh` is enabled. Lower values give more up-to-date results at the cost of more frequent network requests.
+</ParamField>

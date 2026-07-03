@@ -1,0 +1,175 @@
+---
+title: "UI Animations: Chat, Killfeed, Menu, and Module Reveals"
+sidebarTitle: "UI Animations"
+description: "Fine-tune BestClient's interface animations — chat slide-in, killfeed fade, module reveal, and ingame menu timing — or disable them all at once."
+---
+
+BestClient wraps its interface elements in smooth entrance and exit animations to give the UI a polished, modern feel. Every individual animation has its own enable toggle and millisecond duration so you can mix instant snapping in critical areas — like the killfeed — with gentle reveals elsewhere. A single master switch, `bc_animations`, turns all BestClient UI animations off at once when you need a completely static, distraction-free display.
+
+---
+
+## Master Toggle
+
+<ParamField query="bc_animations" type="int" default="1">
+  Global toggle for all BestClient UI animations. Set to `0` to disable every animation listed on this page at once. Individual toggles still take effect when the master is re-enabled. **Default:** `1` (enabled).
+</ParamField>
+
+<Tip>
+  Run `bc_animations 0` in the console to instantly disable all BestClient UI animations for minimal visual noise. Re-enable with `bc_animations 1` and your per-animation settings will be preserved.
+</Tip>
+
+---
+
+## Module Reveal
+
+The module reveal animation plays when BestClient settings panels expand or collapse in the settings UI.
+
+<CodeGroup>
+```cfg Enable module reveal
+bc_module_ui_reveal_animation 1
+bc_module_ui_reveal_animation_ms 180
+```
+
+```cfg Fast snappy reveal
+bc_module_ui_reveal_animation 1
+bc_module_ui_reveal_animation_ms 80
+```
+</CodeGroup>
+
+<ParamField query="bc_module_ui_reveal_animation" type="int" default="1">
+  Toggle the expand/collapse animation on BestClient module settings panels. **Default:** `1` (enabled).
+</ParamField>
+
+<ParamField query="bc_module_ui_reveal_animation_ms" type="int" default="180">
+  Duration of the module reveal animation in milliseconds. **Range:** `1–500`. **Default:** `180`.
+</ParamField>
+
+---
+
+## Ingame Menu
+
+The ingame menu animation plays when you open or close the ESC in-game menu.
+
+<CodeGroup>
+```cfg Enable ingame menu animation
+bc_ingame_menu_animation 1
+bc_ingame_menu_animation_ms 220
+```
+</CodeGroup>
+
+<ParamField query="bc_ingame_menu_animation" type="int" default="0">
+  Toggle the slide/fade animation for the ESC ingame menu. **Default:** `0` (disabled).
+</ParamField>
+
+<ParamField query="bc_ingame_menu_animation_ms" type="int" default="220">
+  Duration of the ingame menu animation in milliseconds. **Range:** `1–500`. **Default:** `220`.
+</ParamField>
+
+---
+
+## Chat Animations
+
+Chat has three separate animation phases — the passive idle scroll, the open/close transition, and the typing indicator — each independently controllable. The animation type selector additionally changes how messages enter the viewport.
+
+<CodeGroup>
+```cfg All chat animations enabled
+bc_chat_animation 1
+bc_chat_animation_ms 300
+bc_chat_open_animation 1
+bc_chat_open_animation_ms 220
+bc_chat_typing_animation 1
+bc_chat_typing_animation_ms 180
+bc_chat_animation_type 3
+```
+
+```cfg Instant chat, animated typing only
+bc_chat_animation 0
+bc_chat_open_animation 0
+bc_chat_typing_animation 1
+bc_chat_typing_animation_ms 150
+```
+</CodeGroup>
+
+<ParamField query="bc_chat_animation" type="int" default="1">
+  Toggle the passive chat scroll animation (new messages entering the log). **Default:** `1` (enabled).
+</ParamField>
+
+<ParamField query="bc_chat_animation_ms" type="int" default="300">
+  Duration of the chat message scroll animation in milliseconds. **Range:** `1–500`. **Default:** `300`.
+</ParamField>
+
+<ParamField query="bc_chat_open_animation" type="int" default="1">
+  Toggle the animation that plays when the chat window opens or closes. **Default:** `1` (enabled).
+</ParamField>
+
+<ParamField query="bc_chat_open_animation_ms" type="int" default="220">
+  Duration of the chat open/close animation in milliseconds. **Range:** `1–500`. **Default:** `220`.
+</ParamField>
+
+<ParamField query="bc_chat_typing_animation" type="int" default="1">
+  Toggle the animation shown in the text-input area while you are typing a message. **Default:** `1` (enabled).
+</ParamField>
+
+<ParamField query="bc_chat_typing_animation_ms" type="int" default="180">
+  Duration of the typing indicator animation in milliseconds. **Range:** `1–500`. **Default:** `180`.
+</ParamField>
+
+<ParamField query="bc_chat_animation_type" type="int" default="3">
+  Style of the chat message enter animation. Values `1`–`4` select different motion curves and directions. **Range:** `1–4`. **Default:** `3`.
+</ParamField>
+
+---
+
+## Killfeed
+
+The killfeed animation controls how kill entries appear and disappear in the top-right corner of the HUD.
+
+<CodeGroup>
+```cfg Enable killfeed animation
+bc_killfeed_animation 1
+bc_killfeed_animation_ms 200
+```
+
+```cfg Instant killfeed
+bc_killfeed_animation 0
+```
+</CodeGroup>
+
+<ParamField query="bc_killfeed_animation" type="int" default="1">
+  Toggle the fade/slide animation for killfeed entries. **Default:** `1` (enabled).
+</ParamField>
+
+<ParamField query="bc_killfeed_animation_ms" type="int" default="200">
+  Duration of the killfeed entry animation in milliseconds. **Range:** `1–500`. **Default:** `200`.
+</ParamField>
+
+---
+
+## Miscellaneous UI
+
+These settings control smaller visual details that affect the scoreboard, ESC player list, emoticons, and tab overlay.
+
+<CodeGroup>
+```cfg Recommended competitive setup
+bc_emoticon_shadow 1
+bc_scoreboard_team_gradients 1
+bc_show_points_in_tab 0
+bc_esc_player_list 1
+```
+</CodeGroup>
+
+<ParamField query="bc_emoticon_shadow" type="int" default="0">
+  Draw a drop shadow behind emoticons to improve readability on bright backgrounds. **Default:** `0` (disabled).
+</ParamField>
+
+<ParamField query="bc_scoreboard_team_gradients" type="int" default="1">
+  Render scoreboard team color rows with a left-to-right gradient fade instead of a solid block of color. **Default:** `1` (enabled).
+</ParamField>
+
+<ParamField query="bc_show_points_in_tab" type="int" default="0">
+  Show each player's DDNet points in the Tab scoreboard, inserted between the player name and clan columns. **Default:** `0` (disabled).
+</ParamField>
+
+<ParamField query="bc_esc_player_list" type="int" default="0">
+  Show the full player list inside the ESC in-game menu under the Game tab. **Default:** `0` (disabled).
+</ParamField>

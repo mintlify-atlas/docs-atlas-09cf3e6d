@@ -1,0 +1,79 @@
+---
+title: "Streamer Mode: Hide Sensitive Info During Streams"
+sidebarTitle: "Streamer Mode"
+description: "BestClient's Streamer Mode uses a bitmask to selectively hide server IPs, player names, friend whispers, your own name, and login credentials on screen."
+---
+
+Streamer Mode lets you go live without accidentally revealing personal or sensitive information to your audience. Rather than a single on/off switch, BestClient uses a **bitmask** system — each bit in the `bc_streamer_flags` value controls an independent piece of information. You add the numeric values of the flags you want to activate, giving you granular control over exactly what is hidden. The default value of `64` enables only `STREAMER_HIDE_LOGIN`, which masks credentials on screen while leaving everything else visible.
+
+---
+
+## Configuration Variable
+
+<ParamField path="bc_streamer_flags" type="int" default="64" min="0" max="127">
+  Bitmask of active Streamer Mode options. Each enabled bit hides a specific category of on-screen information. Set to `0` to disable all Streamer Mode protections, or combine flag values to hide exactly what you need. The maximum value of `127` enables all seven flags simultaneously.
+</ParamField>
+
+---
+
+## Flag Reference
+
+The flags are defined in the `EStreamerFlags` enum in `bestclient.h`. Each flag is a power of two so they combine cleanly with addition (or bitwise OR).
+
+| Value | Flag name | Bit | What it hides |
+|------:|-----------|:---:|---------------|
+| **1** | `STREAMER_HIDE_SERVER_IP` | 0 | The server IP address and port wherever they appear in the UI (connect dialog, server info, etc.). |
+| **2** | `STREAMER_HIDE_CHAT` | 1 | All chat messages in the chat window. |
+| **4** | `STREAMER_HIDE_FRIEND_WHISPER` | 2 | Private whisper messages from friends, keeping DMs out of the stream. |
+| **8** | `STREAMER_HIDE_OWN_NAME` | 3 | Your own player name in name plates and anywhere your name appears in the game world. |
+| **16** | `STREAMER_HIDE_OTHER_NAMES` | 4 | The names of all other players in the game world and name plates. |
+| **32** | `STREAMER_HIDE_TAB_NAMES` | 5 | Player names in the scoreboard (Tab screen). |
+| **64** | `STREAMER_HIDE_LOGIN` | 6 | Login credentials (passwords, tokens) wherever they appear in menus or the console. **Enabled by default.** |
+
+<Tip>
+  To activate multiple flags at once, simply **add their values together** (equivalent to a bitwise OR when all values are distinct powers of two). For example, to hide the server IP (`1`) and all login credentials (`64`), set `bc_streamer_flags` to `1 + 64 = 65`. You can also chain more: hiding server IP + chat + login = `1 + 2 + 64 = 67`.
+</Tip>
+
+---
+
+## Common Combinations
+
+### Hide server IP and login only (recommended minimum for public streams)
+
+```cfg
+bc_streamer_flags 65
+```
+
+This enables `STREAMER_HIDE_SERVER_IP` (1) + `STREAMER_HIDE_LOGIN` (64).
+
+### Full anonymity mode (hide all names, IP, and login)
+
+```cfg
+bc_streamer_flags 121
+```
+
+This enables `STREAMER_HIDE_SERVER_IP` (1) + `STREAMER_HIDE_OWN_NAME` (8) + `STREAMER_HIDE_OTHER_NAMES` (16) + `STREAMER_HIDE_TAB_NAMES` (32) + `STREAMER_HIDE_LOGIN` (64) = 121.
+
+### Hide everything
+
+```cfg
+bc_streamer_flags 127
+```
+
+All seven flags active simultaneously.
+
+### Disable Streamer Mode entirely
+
+```cfg
+bc_streamer_flags 0
+```
+
+---
+
+## Silent Typing
+
+While not part of the streamer flags bitmask, this complementary option is useful for streamers who want to compose chat messages without broadcasting their typing state to other players.
+
+<ParamField path="bc_silent_typing" type="int" default="0">
+  When enabled (`1`), BestClient suppresses the `PLAYERFLAG_CHATTING` flag that is normally sent to the server while you are typing. Other players will not see the typing indicator above your character, keeping your chat composition private until you actually send the message.
+</ParamField>

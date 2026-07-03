@@ -1,0 +1,72 @@
+---
+title: "Chat Media: Inline Image and GIF Previews in Chat"
+sidebarTitle: "Chat Media"
+description: "BestClient renders image and GIF previews directly in the chat window from shared links. Configure allowed domains, max width, and fullscreen viewer zoom."
+---
+
+When another player pastes an image or GIF link into chat, BestClient can automatically fetch and render a thumbnail preview inline — directly below the chat message, without requiring you to open a browser. The feature supports static images (photos) and animated GIFs separately, so you can enable whichever types you prefer. A fullscreen viewer lets you zoom into any preview with a click. All media loading respects a configurable domain allowlist so you stay in control of where the client fetches content from.
+
+---
+
+## Enabling Chat Media
+
+<ParamField path="bc_chat_media_preview" type="int" default="1">
+  Master toggle for the chat media preview feature. Set to `1` to allow media previews to appear in chat, or `0` to disable all inline rendering regardless of other settings.
+</ParamField>
+
+<ParamField path="bc_chat_media_photos" type="int" default="1">
+  When enabled (`1`), static image links (PNG, JPG, WebP, etc.) shared in chat are fetched and rendered as inline thumbnails. Requires `bc_chat_media_preview` to be active.
+</ParamField>
+
+<ParamField path="bc_chat_media_gifs" type="int" default="1">
+  When enabled (`1`), animated GIF and other animated media links shared in chat are rendered as inline animated previews. Requires `bc_chat_media_preview` to be active.
+</ParamField>
+
+---
+
+## Content Filter and Domain Allowlist
+
+By default, BestClient only loads media from a curated set of trusted domains. This prevents the client from making outbound requests to arbitrary URLs shared in chat.
+
+<ParamField path="bc_chat_media_content_filter" type="int" default="1">
+  Enables (`1`) the domain allowlist for chat media. When active, only URLs whose hostname matches an entry in `bc_chat_media_allowed_domains` will be previewed. Set to `0` to disable filtering and allow media from any domain — see the warning below.
+</ParamField>
+
+<ParamField path="bc_chat_media_allowed_domains" type="string" default='"tenor.com; imgur.com; giphy.com"'>
+  A semicolon-separated list of domains from which chat media previews are permitted. Entries are matched against the hostname portion of any URL shared in chat. The default covers the most common GIF and image-sharing services.
+</ParamField>
+
+### Adding a Domain to the Allowlist
+
+To allow previews from an additional domain, append it to the existing list. The semicolon (`;`) is the separator:
+
+```cfg
+bc_chat_media_content_filter 1
+bc_chat_media_allowed_domains "tenor.com; imgur.com; giphy.com; example.com"
+```
+
+<Warning>
+  Setting `bc_chat_media_content_filter 0` disables the domain allowlist entirely. With filtering off, BestClient will attempt to fetch and render media from **any** URL shared in chat, including those on untrusted or malicious domains. Only disable the content filter in private or fully trusted server environments.
+</Warning>
+
+---
+
+## Preview Size
+
+<ParamField path="bc_chat_media_preview_max_width" type="int" default="220" min="120" max="400">
+  The maximum width of an inline chat media thumbnail, in pixels. The preview scales proportionally to fit within this width. Increase it for larger, more detailed previews; decrease it to keep the chat window less cluttered. Valid range is 120–400 px.
+</ParamField>
+
+---
+
+## Fullscreen Viewer
+
+Clicking a chat preview opens it in a fullscreen viewer overlay. The viewer supports zoom so you can inspect images in detail.
+
+<ParamField path="bc_chat_media_viewer" type="int" default="1">
+  Enables (`1`) the fullscreen media viewer. When disabled, clicking a chat preview does nothing — previews are display-only thumbnails.
+</ParamField>
+
+<ParamField path="bc_chat_media_viewer_max_zoom" type="int" default="800" min="100" max="2000">
+  Maximum zoom level for the fullscreen viewer, expressed as a percentage of the image's native size. The default of `800%` allows zooming in to 8× the original resolution. Adjust downward if you prefer to limit zoom, or upward for very fine detail inspection. Valid range is 100–2000%.
+</ParamField>

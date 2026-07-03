@@ -1,0 +1,141 @@
+---
+title: "Components Editor: Toggle 52 BestClient Modules"
+sidebarTitle: "Components Editor"
+description: "The Components Editor is a fullscreen toggle panel for all BestClient and TClient modules. Changes are staged before apply and prompt a client restart."
+---
+
+The Components Editor is a dedicated fullscreen toggle page built into BestClient that gives you complete control over every BestClient and TClient module installed in the client. Rather than scattering individual on/off switches across multiple settings tabs, it gathers all 52 component toggles into a single organised panel with grouped categories, staged change tracking, discard warnings, and a post-apply restart prompt so you never accidentally lose a partial configuration.
+
+## Opening the Editor
+
+Navigate to **BestClient Settings → Components** tab. The Components Editor occupies the full settings panel and replaces the normal settings content while it is open.
+
+## How Staging Works
+
+Every toggle you flip in the Components Editor is held in a pending state — it is **not** written to the config or applied to the running client until you press **Apply**. If you try to close the editor or navigate away with unapplied changes, the editor warns you before discarding them. After you apply a new component mask the client shows a restart prompt, because most modules only fully start or stop during initialisation.
+
+<Note>
+  Applying the component mask always requires a client restart to take effect. The editor will prompt you automatically after you press **Apply**.
+</Note>
+
+<Warning>
+  Do not edit `bc_disabled_components_mask_lo` or `bc_disabled_components_mask_hi` by hand in your config file unless you know exactly which bit corresponds to which module. Each integer encodes 31 component slots, and a wrong value will silently disable unrelated features.
+</Warning>
+
+## Component Groups
+
+### Visuals
+
+Visual modules control rendering effects that appear during gameplay and in menus.
+
+| Module | Description |
+|---|---|
+| Camera Drift | Adds a subtle sway to the camera as you move |
+| Jelly Tee | Physics-based tee body deformation on movement |
+| Magic Particles | Ambient particle emitter around your character |
+| Dynamic FOV | Scales the field of view with movement speed |
+| Afterimage | Leaves fading ghost frames behind your tee |
+| Music Player | In-game music player HUD widget |
+| Media Background | Custom video or image background for menus and in-game |
+| Eye Comfort | Warm overlay to reduce eye strain during long sessions |
+
+### Gameplay
+
+Gameplay modules affect input timing, movement decisions, and race tools.
+
+| Module | Description |
+|---|---|
+| Input | Fast input, delta input, best input, Saiko+, and related input systems |
+| Fast Actions | Quick-use action shortcuts for competitive play |
+| Finish Prediction | Progress bar and time estimate toward map completion |
+
+### Others
+
+Social and utility modules that operate outside of pure rendering or input.
+
+| Module | Description |
+|---|---|
+| Voice Chat | Integrated in-client voice communication system |
+| Voice Binds | Push-to-talk and voice command key bindings |
+| Chat Media | Inline image and GIF preview inside the chat window |
+
+### TClient
+
+TClient entries expose tabs, pages, and settings rows contributed by the upstream TClient fork. Disabling them removes their UI surface without affecting BestClient-native features.
+
+| Module | Description |
+|---|---|
+| Settings Tab | TClient settings tab in the main settings panel |
+| Bind Wheel Tab | Bind wheel tab entry |
+| War List Tab | War list management tab |
+| Chat Binds Tab | Chat bind shortcuts tab |
+| Status Bar Tab | Server status bar tab |
+| Info Tab | TClient info/about tab |
+| Profiles Page | Profile switcher page |
+| Configs Page | Config file manager page |
+| Visual Settings | TClient visual settings section |
+| Anti-Latency | Anti-latency settings entry |
+| Anti-Ping Smoothing | Ping smoothing settings entry |
+| Auto Execute | Auto-execute on connect settings |
+| Voting | Voting helper settings entry |
+| Auto Reply | Auto-reply settings entry |
+| Player Indicator | Player indicator settings entry |
+| Pet | Pet/companion settings entry |
+| HUD (TClient) | TClient HUD settings section |
+| Frozen Tee Display | Frozen tee visual indicator settings |
+| Tile Outlines | Map tile outline settings |
+| Ghost Tools | Ghost replay tools settings |
+| Rainbow | Rainbow colour cycle settings |
+| Tee Trails | TClient tee trail settings entry |
+| Background Draw | Custom background draw settings |
+| Finish Name | Finish name display settings |
+
+## The Bitmask Under the Hood
+
+Internally, the Components Editor writes to two config integers that together encode a 62-bit field (two signed 31-bit values):
+
+```cfg
+bc_disabled_components_mask_lo 0
+bc_disabled_components_mask_hi 0
+```
+
+Each bit position maps to one `EBestClientComponent` enum value defined in `bestclient.h`. When a bit is **set**, that component is **disabled**. Both values default to `0`, meaning all components are enabled. The split into `_lo` and `_hi` exists because DDNet config integers are capped at `2147483647` (a signed 32-bit max), so each half covers components `0–30` and `31–56` respectively.
+
+The editor always writes both values atomically when you press **Apply**, so there is no risk of a partial save leaving the mask in a half-updated state.
+
+## Full Component Reference
+
+The 57 registered `EBestClientComponent` slots (from `bestclient.h`) in order are:
+
+```
+COMPONENT_VISUALS_MUSIC_PLAYER
+COMPONENT_VISUALS_MEDIA_BACKGROUND
+COMPONENT_VISUALS_OPTIMIZER
+COMPONENT_VISUALS_ANIMATIONS
+COMPONENT_VISUALS_CRYSTAL_LASER
+COMPONENT_VISUALS_FOCUS_MODE
+COMPONENT_VISUALS_3D_PARTICLES
+COMPONENT_VISUALS_ASPECT_RATIO
+COMPONENT_GAMEPLAY_INPUT
+COMPONENT_GAMEPLAY_FAST_ACTIONS
+COMPONENT_GAMEPLAY_SPEEDRUN_TIMER
+COMPONENT_GAMEPLAY_FINISH_PREDICTION
+COMPONENT_GAMEPLAY_AUTO_TEAM_LOCK
+COMPONENT_GAMEPLAY_GORES_MODE
+COMPONENT_GAMEPLAY_HOOK_COMBO
+COMPONENT_OTHERS_CLIENT_INDICATOR
+COMPONENT_TCLIENT_SETTINGS_TAB … COMPONENT_TCLIENT_SETTINGS_FINISH_NAME
+COMPONENT_OTHERS_MISC
+COMPONENT_OTHERS_CHAT_MEDIA
+COMPONENT_OTHERS_VOICE_SETTINGS
+COMPONENT_OTHERS_VOICE_BINDS
+COMPONENT_OTHERS_STREAMER
+COMPONENT_VISUALS_JELLY_TEE
+COMPONENT_VISUALS_PLAYER_TRAIL
+COMPONENT_VISUALS_MOTION_BLUR
+COMPONENT_VISUALS_FLYING_NAMEPLATES
+COMPONENT_VISUALS_KEYSTROKES
+COMPONENT_VISUALS_EYE_COMFORT
+```
+
+Legacy reserved slots (`COMPONENT_VISUALS_LEGACY_RESERVED_1/2/3/4`) occupy fixed bit positions but render no toggle in the UI; their bits are always preserved as-is to avoid shifting the mask of existing configs.

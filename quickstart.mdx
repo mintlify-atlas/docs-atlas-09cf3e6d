@@ -1,47 +1,127 @@
 ---
-title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+title: "Get Started with BestClient in 5 Minutes"
+sidebarTitle: "Quickstart"
+description: "Connect to a DDNet server and configure your first BestClient features. Covers settings navigation, enabling visual effects, and setting up input modes."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
+This guide walks you through everything you need to go from a fresh BestClient install to a configured, personalized session on a DDNet server. By the end you will have joined a server, explored the BestClient settings panel, enabled a visual effect, chosen an input mode, and used both the Components Editor and HUD Editor to shape your in-game experience.
 
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
-
-## Prerequisites
-
-Before you begin, you must have:
-
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
-
-## Get started
+## Step-by-Step Setup
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
+  <Step title="Launch BestClient and connect to a server">
+    Start BestClient. The main menu opens with the server browser visible. To find a DDNet server quickly:
 
-    ```bash
-    npm install your-package
-    ```
+    1. Click the **Server Browser** tab.
+    2. In the filter bar, type `DDNet` or select the **DDNet** network from the network dropdown.
+    3. Double-click any server in the list to connect.
+
+    BestClient uses a BestClient master server mirror (`bc_mastersrv`) alongside the standard DDNet master servers, so the browser may show a slightly richer server list than vanilla DDNet.
   </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
 
-    ```bash
-    your-cli init
-    ```
+  <Step title="Open BestClient settings">
+    Once you are in-game (or from the main menu), open the settings panel:
+
+    1. Press **Escape** or click the **Settings** button in the top menu.
+    2. Navigate to the **BestClient** tab — it sits alongside the standard DDNet settings tabs.
+
+    The BestClient tab is organized into sections: **Visuals**, **Input**, **Social**, **Editors**, **Shop**, and more. Use `bc_bestclient_settings_tabs` if you want to control which sub-tabs are visible.
   </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
 
-    ```bash
-    your-cli start
+  <Step title="Enable a visual effect">
+    Camera Drift is one of the most immediately noticeable BestClient visual features — it adds a subtle momentum-based camera offset as you move, giving gameplay a more cinematic feel.
+
+    In **Settings → BestClient → Visuals**, toggle **Camera Drift** on, or run the command directly in the console (`F1`):
+
+    ```cfg
+    bc_camera_drift 1
+    bc_camera_drift_amount 300
     ```
+
+    Adjust `bc_camera_drift_amount` (default `300`) to taste — higher values produce a more pronounced drift. `bc_camera_drift_smoothness` controls how quickly the offset catches up to your movement.
+
+    Other visual effects worth exploring right away:
+
+    | Feature | Console command | What it does |
+    |---------|----------------|--------------|
+    | Dynamic FOV | `bc_dynamic_fov 1` | Widens the field of view proportionally as you move faster |
+    | Afterimage | `bc_afterimage 1` | Leaves a fading ghost trail behind your tee |
+    | Eye Comfort | `bc_eye_comfort 1` | Applies a subtle brightness/contrast filter to reduce eye strain |
+    | Motion Blur | `bc_motion_blur 1` | Adds directional blur to fast-moving objects |
+  </Step>
+
+  <Step title="Configure your input mode">
+    BestClient offers four extended input modes on top of standard DDNet input. Open **Settings → BestClient → Input** to choose one:
+
+    | Mode | Config value | Description |
+    |------|-------------|-------------|
+    | **Fast Input** | `bc_fast_input_mode 1–4` | Reduces input pipeline latency by polling and applying inputs earlier in the frame |
+    | **Delta Input** | `bc_fast_input_delta_input 1` | Uses delta-based mouse accumulation for smoother aim at low framerates |
+    | **Best Input** | `bc_best_input_preset <n>` | Opinionated preset combining latency compensation, smoothing, and interpolation |
+    | **Saiko+** | `bc_saiko_plus_amount <n>` | Fine-grained mouse sensitivity amplification used by top players |
+
+    A common competitive starting point:
+
+    ```cfg
+    bc_fast_input_mode 3
+    ```
+
+    You can also enable **Snap Tap** (`bc_snap_tap 1`) for keyboard direction conflict resolution, and **45 Degrees** (`bc_toggle_45_degrees 1`) to lock aim to 45° increments on demand.
+  </Step>
+
+  <Step title="Use the Components Editor">
+    The Components Editor is BestClient's dedicated fullscreen module manager. It lets you enable or disable any of the 52 BestClient and TClient components in one place, staging changes before committing them.
+
+    To open it: **Settings → BestClient → Components Editor** (or find it in the Editors section of the BestClient tab).
+
+    - Toggle modules on or off across four groups: **Visuals**, **Gameplay**, **Others**, and **TClient**.
+    - Unsaved edits are tracked — the editor will warn you before discarding changes.
+    - After clicking **Apply**, BestClient updates `bc_disabled_components_mask_lo` and `bc_disabled_components_mask_hi` and prompts for a restart to activate the new component set.
+
+    Use the Components Editor when you want a clean, minimal layout — for example, disabling all particle systems and HUD extras for a performance-focused session.
+  </Step>
+
+  <Step title="Position HUD widgets with the HUD Editor">
+    The HUD Editor lets you drag BestClient's HUD modules — Music Player, Voice HUD, mute icons, chat, and votes — directly over live gameplay or a demo, then save their positions.
+
+    To open it: **Settings → BestClient → HUD Editor**.
+
+    Each widget's position and scale is stored in your config as `bc_hud_<widget>_x`, `bc_hud_<widget>_y`, and `bc_hud_<widget>_scale`. For example, the Music Player widget saves to:
+
+    ```cfg
+    bc_hud_music_player_x 120
+    bc_hud_music_player_y 40
+    bc_hud_music_player_scale 1
+    ```
+
+    Drag the widget to your preferred corner, release, and the values update automatically.
   </Step>
 </Steps>
 
-<Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
+## Configuration Reference Tip
 
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
+All `bc_*` settings are saved automatically to `settings_ddnet.cfg` inside your `$USERDIR` whenever you close the client or apply changes in the settings panel. You can also edit this file directly in any text editor.
+
+A minimal starter config that covers the most popular BestClient tweaks:
+
+```cfg
+bc_camera_drift 1
+bc_camera_drift_amount 300
+bc_dynamic_fov 1
+bc_fast_input_mode 3
+```
+
+<Tip>
+  BestClient ships 280 `bc_*` config entries covering every feature described in this guide. See the **Configuration Reference** for the full list with accepted values, defaults, and descriptions for each setting.
 </Tip>
+
+## What to Explore Next
+
+<CardGroup cols={2}>
+  <Card title="Features" icon="star" href="/features">
+    Deep-dive into every BestClient feature: visuals, input modes, social systems, editors, the Shop, and the Fun tab mini-games.
+  </Card>
+  <Card title="Configuration Reference" icon="sliders" href="/config/overview">
+    The complete reference for all 280 `bc_*` config variables — values, ranges, defaults, and usage notes.
+  </Card>
+</CardGroup>

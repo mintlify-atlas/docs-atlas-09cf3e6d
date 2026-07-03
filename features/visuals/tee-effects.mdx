@@ -1,0 +1,204 @@
+---
+title: "Tee Visual Effects: Jelly Tee, Afterimage, Motion Blur, Trail"
+sidebarTitle: "Tee Effects"
+description: "Animate your tee with Jelly physics, Afterimage ghost frames, Motion Blur streaks, and a Player Trail. Configure per-effect intensity and behavior."
+---
+
+BestClient adds a suite of per-tee visual effects that layer on top of standard DDNet rendering. **Jelly Tee** deforms your body on impact for a satisfying squash-and-stretch feel. **Afterimage** leaves ghost frames at regular intervals behind you as you move. **Motion Blur** blends the previous render frame into the current one to simulate camera exposure. **Player Trail** draws a persistent streak behind your tee. **Flying Name Plates** turn static name tags into physics-driven kites. **Eye Comfort** overlays a warm tint to reduce eye strain during long sessions. Each effect is opt-in and scoped to your own tee or optionally extended to other players.
+
+---
+
+## Jelly Tee
+
+Jelly Tee applies a spring-based squash-and-stretch deformation to your tee's body when you change velocity or take an impact. The result is a rubbery, cartoonish animation that makes movement feel more reactive.
+
+<CodeGroup>
+```cfg Enable for self only
+bc_jelly_tee 1
+bc_jelly_tee_strength 500
+bc_jelly_tee_duration 30
+```
+
+```cfg Enable for everyone
+bc_jelly_tee 1
+bc_jelly_tee_others 1
+bc_jelly_tee_strength 400
+bc_jelly_tee_duration 25
+```
+</CodeGroup>
+
+<ParamField query="bc_jelly_tee" type="int" default="0">
+  Enable Jelly Tee deformation on your own character. **Default:** `0` (disabled).
+</ParamField>
+
+<ParamField query="bc_jelly_tee_others" type="int" default="0">
+  Apply Jelly Tee deformation to other players as well. **Default:** `0` (disabled).
+</ParamField>
+
+<ParamField query="bc_jelly_tee_strength" type="int" default="500">
+  Amplitude of the deformation. Higher values produce a more exaggerated squash/stretch. **Range:** `0–1000`. **Default:** `500`.
+</ParamField>
+
+<ParamField query="bc_jelly_tee_duration" type="int" default="30">
+  Number of ticks the deformation oscillation persists after an impact before the tee returns to its normal shape. **Range:** `1–500`. **Default:** `30`.
+</ParamField>
+
+---
+
+## Afterimage
+
+Afterimage renders semi-transparent ghost copies of your tee at fixed spacing intervals behind your current position, creating a multi-frame echo trail that emphasises speed and direction.
+
+<CodeGroup>
+```cfg Enable afterimage
+bc_afterimage 1
+bc_afterimage_frames 5
+bc_afterimage_alpha 40
+bc_afterimage_spacing 6
+```
+</CodeGroup>
+
+<ParamField query="bc_afterimage" type="int" default="0">
+  Enable Afterimage ghost frames on your tee. **Default:** `0` (disabled).
+</ParamField>
+
+<ParamField query="bc_afterimage_frames" type="int" default="5">
+  Number of ghost copies rendered behind the current tee position. **Default:** `5`.
+</ParamField>
+
+<ParamField query="bc_afterimage_alpha" type="int" default="40">
+  Base opacity of the first (most recent) ghost frame. Each subsequent ghost fades proportionally. **Default:** `40`.
+</ParamField>
+
+<ParamField query="bc_afterimage_spacing" type="int" default="6">
+  Tick gap between each ghost sample. Smaller values cluster the ghosts tightly; larger values spread them across more distance. **Default:** `6`.
+</ParamField>
+
+---
+
+## Motion Blur
+
+Motion Blur works by blending the previous rendered frame with the current one at configurable strength, simulating the exposure-time smear of a real camera. It is a full-screen effect and applies to everything rendered, not just tees.
+
+<CodeGroup>
+```cfg Subtle blur
+bc_motion_blur 1
+bc_motion_blur_strength 30
+```
+
+```cfg Heavy cinematic blur
+bc_motion_blur 1
+bc_motion_blur_strength 75
+```
+</CodeGroup>
+
+<ParamField query="bc_motion_blur" type="int" default="0">
+  Enable Motion Blur via previous-frame blending. **Default:** `0` (disabled).
+</ParamField>
+
+<ParamField query="bc_motion_blur_strength" type="int" default="50">
+  How much of the previous frame is blended into the current frame, expressed as a percentage. `0` = no blending (sharp); `95` = nearly fully ghosted. **Range:** `0–95`. **Default:** `50`.
+</ParamField>
+
+<Note>
+  Motion Blur is rendered at the framebuffer level. Very high strength values (above 80) can make fast movement hard to read — use sparingly in competitive play.
+</Note>
+
+---
+
+## Player Trail
+
+Player Trail draws a persistent streak that follows the tee's path through the world. Three mode presets give the trail a different visual style and fade behaviour.
+
+<CodeGroup>
+```cfg Enable trail (grenade mode)
+bc_trail 1
+bc_trail_mode 0
+```
+
+```cfg Ninja trail for others too
+bc_trail 1
+bc_trail_others 1
+bc_trail_mode 2
+```
+</CodeGroup>
+
+<ParamField query="bc_trail" type="int" default="0">
+  Enable the Player Trail effect on your own tee. **Default:** `0` (disabled).
+</ParamField>
+
+<ParamField query="bc_trail_others" type="int" default="0">
+  Render Player Trail for other players as well. **Default:** `0` (disabled).
+</ParamField>
+
+<ParamField query="bc_trail_mode" type="int" default="0">
+  Visual style of the trail. `0` = Grenade (coloured particle chain), `1` = Invisible (invisible trail, useful for debugging movement), `2` = Ninja (dark energy slash style). **Range:** `0–2`. **Default:** `0`.
+</ParamField>
+
+---
+
+## Flying Name Plates
+
+Flying Name Plates detach player names from their fixed overhead position and turn them into physics-driven labels that lag, drift, and catch up to movement like a kite on a string.
+
+<CodeGroup>
+```cfg Enable with gentle follow
+bc_flying_name_plates 1
+bc_flying_name_plates_lift 28
+bc_flying_name_plates_drag 52
+bc_flying_name_plates_follow 40
+```
+
+```cfg Tight follow, low lift
+bc_flying_name_plates 1
+bc_flying_name_plates_lift 10
+bc_flying_name_plates_drag 20
+bc_flying_name_plates_follow 80
+```
+</CodeGroup>
+
+<ParamField query="bc_flying_name_plates" type="int" default="0">
+  Render name plates as physics-driven kites attached to players. **Default:** `0` (disabled).
+</ParamField>
+
+<ParamField query="bc_flying_name_plates_lift" type="int" default="28">
+  Extra vertical lift applied to the name plate target position, pushing it higher above the tee. **Range:** `0–120`. **Default:** `28`.
+</ParamField>
+
+<ParamField query="bc_flying_name_plates_drag" type="int" default="52">
+  How far the name plate trails behind lateral movement. Higher values create a more pronounced lag behind direction changes. **Range:** `0–200`. **Default:** `52`.
+</ParamField>
+
+<ParamField query="bc_flying_name_plates_follow" type="int" default="40">
+  How quickly the flying name plate catches up to its target position. Higher values snap it back faster; lower values let it drift loosely. **Range:** `1–100`. **Default:** `40`.
+</ParamField>
+
+---
+
+## Eye Comfort
+
+Eye Comfort overlays a warm yellow tint on the entire screen to reduce the blue-light harshness of bright map textures and white chat text during extended play sessions.
+
+<CodeGroup>
+```cfg Mild warmth
+bc_eye_comfort 1
+bc_eye_comfort_strength 25
+```
+
+```cfg Full warmth
+bc_eye_comfort 1
+bc_eye_comfort_strength 70
+```
+</CodeGroup>
+
+<ParamField query="bc_eye_comfort" type="int" default="0">
+  Render a warm yellow screen overlay to reduce eye strain. **Default:** `0` (disabled).
+</ParamField>
+
+<ParamField query="bc_eye_comfort_strength" type="int" default="35">
+  Intensity of the warm overlay as a percentage. Higher values increase warmth and lower overall screen brightness simultaneously. **Range:** `0–100`. **Default:** `35`.
+</ParamField>
+
+<Tip>
+  Eye Comfort works best at values between `20`–`50`. Above `60` the overlay noticeably darkens the game, which can make it harder to read map tiles.
+</Tip>

@@ -1,0 +1,68 @@
+---
+title: "Fun Tab: 14 Built-In Mini-Games Inside BestClient"
+sidebarTitle: "Fun Tab"
+description: "The Fun tab in BestClient's main menu includes 14 mini-games playable without leaving the client: Snake, Chess, Tetris, 2048, Minesweeper, and more."
+---
+
+The Fun tab is a curated section of the BestClient main menu that bundles 14 fully playable mini-games directly inside the client. Whether you are waiting for a map download, taking a break between runs, or just want something to do in the lobby, every game in the Fun tab is available instantly — no extra installs, no config variables, and no network connection required. All games run inside the BestClient UI layer and can be opened and closed with a single click at any time.
+
+## Accessing the Fun Tab
+
+Click **Fun** in the BestClient main menu sidebar. The tab is present from the first launch and requires no setup. All 14 games are unlocked and available immediately.
+
+## Games
+
+<CardGroup cols={3}>
+  <Card title="Snake" icon="snake">
+    Classic grid-based snake game. Eat to grow, avoid the walls and your own tail.
+  </Card>
+  <Card title="Minesweeper" icon="bomb">
+    Reveal tiles without detonating hidden mines. Classic Minesweeper rules.
+  </Card>
+  <Card title="2048" icon="grid-2x2">
+    Slide numbered tiles to combine pairs and reach the 2048 tile.
+  </Card>
+  <Card title="Chess" icon="chess">
+    Full two-player chess on a standard board with legal move enforcement.
+  </Card>
+  <Card title="Tic-Tac-Toe" icon="x">
+    Three-in-a-row on a 3×3 grid. Play against a friend or the CPU.
+  </Card>
+  <Card title="Lights Out" icon="lightbulb">
+    Toggle lights on a grid so all are off — every press flips adjacent cells too.
+  </Card>
+  <Card title="Memory" icon="layers">
+    Flip cards to find matching pairs before the timer runs out.
+  </Card>
+  <Card title="BlockBlast" icon="blocks">
+    Drop shaped blocks to clear complete rows and columns.
+  </Card>
+  <Card title="Tetris" icon="square">
+    The original falling-block puzzle. Clear lines as pieces descend.
+  </Card>
+  <Card title="Pong" icon="circle">
+    Two-paddle ball bouncing. Score points by getting past your opponent.
+  </Card>
+  <Card title="Packman" icon="pac-man">
+    Navigate a maze, eat pellets, and avoid ghosts.
+  </Card>
+  <Card title="Flappy Bird" icon="bird">
+    Tap to flap through gaps between pipes without crashing.
+  </Card>
+  <Card title="Cat Trap" icon="cat">
+    Surround the cat before it escapes the grid.
+  </Card>
+  <Card title="Brick Breaker" icon="rectangle-horizontal">
+    Control a paddle to bounce the ball and break all bricks on screen.
+  </Card>
+</CardGroup>
+
+## No Configuration Required
+
+The Fun tab has no associated `bc_*` config variables. Every game is always enabled and cannot be disabled through the Components Editor or any other setting. There is nothing to configure — open the tab and play.
+
+## Tips
+
+- Fun tab games run entirely in the client UI, so they work in the main menu, in spectator, or while connected to a server in the background.
+- Your score and game state are not persisted between sessions — each game starts fresh when you open it.
+- The casino balance (`bc_casino_balance`) used by the in-client Casino game is separate from the Fun tab and has its own config variable.

@@ -1,0 +1,129 @@
+---
+title: "Voice Chat Configuration: VAD, Devices, Moderation"
+sidebarTitle: "Voice Chat Config"
+description: "All bc_voice_chat_* config variables for BestClient's built-in voice system: activation, audio devices, VAD threshold, proximity radius, and mute lists."
+---
+
+BestClient includes an integrated voice chat system built on Opus audio encoding. It connects to a managed relay server by default and supports push-to-talk, voice activity detection, per-player volume overrides, proximity-based radius filtering, and a persistent mute list. All settings are saved to `settings_ddnet.cfg`.
+
+---
+
+## Enable & Activation
+
+<ParamField query="bc_voice_chat_enable" type="int" default="1">
+  Master enable for the integrated voice chat system. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_voice_chat_activation_mode" type="int" default="1">
+  How your microphone is activated. `0` = voice activity detection (VAD), `1` = push-to-talk.
+</ParamField>
+
+---
+
+## Voice Activity Detection (VAD)
+
+VAD settings only apply when `bc_voice_chat_activation_mode` is `0`.
+
+<ParamField query="bc_voice_chat_vad_threshold" type="int" default="5">
+  Microphone input level that must be exceeded before automatic voice activation triggers, expressed as a percentage of the maximum input level. Range: `0`–`100`.
+</ParamField>
+
+<ParamField query="bc_voice_chat_vad_release_delay_ms" type="int" default="150">
+  How long in milliseconds the microphone stays active after the input level drops below the VAD threshold. This prevents choppy cut-offs between words. Range: `0`–`1000`.
+</ParamField>
+
+---
+
+## Audio
+
+<ParamField query="bc_voice_chat_volume" type="int" default="100">
+  Playback volume for received voice, as a percentage of the system audio output. Range: `0`–`200`.
+</ParamField>
+
+<ParamField query="bc_voice_chat_mic_gain" type="int" default="100">
+  Software gain applied to your microphone input before encoding, in percent. Values above `100` amplify the signal. Range: `0`–`300`.
+</ParamField>
+
+<ParamField query="bc_voice_chat_bitrate" type="int" default="96">
+  Opus encoder bitrate in kbps. Higher values give better audio quality at the cost of more bandwidth. Range: `6`–`128`.
+</ParamField>
+
+<ParamField query="bc_voice_chat_input_device" type="int" default="-1">
+  Index of the audio input device to use for the microphone. `-1` uses the system default device. Range: `-1`–`64`.
+</ParamField>
+
+<ParamField query="bc_voice_chat_output_device" type="int" default="-1">
+  Index of the audio output device to use for voice playback. `-1` uses the system default device. Range: `-1`–`64`.
+</ParamField>
+
+---
+
+## State
+
+<ParamField query="bc_voice_chat_mic_muted" type="int" default="0">
+  Persistently mute your own microphone so no audio is transmitted. `0` = unmuted, `1` = muted.
+</ParamField>
+
+<ParamField query="bc_voice_chat_headphones_muted" type="int" default="0">
+  Persistently mute incoming voice playback so you cannot hear others. `0` = unmuted, `1` = muted.
+</ParamField>
+
+<ParamField query="bc_voice_chat_mic_check" type="int" default="0">
+  Enable local microphone loopback so you can hear your own voice as others would. Useful for testing microphone levels. `0` = off, `1` = on.
+</ParamField>
+
+---
+
+## Scope
+
+<ParamField query="bc_voice_chat_ingame_only" type="int" default="0">
+  Restrict voice transmit and playback to when the DDNet game window is the active foreground window. `0` = always active, `1` = in-game window only.
+</ParamField>
+
+<ParamField query="bc_voice_chat_use_team0" type="int" default="0">
+  Force voice chat to communicate through team 0 (the global channel) even when you are in a private team. `0` = use your current team, `1` = always use team 0.
+</ParamField>
+
+<ParamField query="bc_voice_chat_enable_your_group" type="int" default="0">
+  When `bc_voice_chat_use_team0` is enabled, also include members of your own team in the voice session. `0` = off, `1` = on.
+</ParamField>
+
+---
+
+## Proximity
+
+<ParamField query="bc_voice_chat_radius_enabled" type="int" default="0">
+  Enable proximity-based voice filtering — only players within a tile radius will be heard. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_voice_chat_radius_tiles" type="int" default="25">
+  Radius in map tiles within which other players can be heard when proximity filtering is active. Range: `1`–`500`.
+</ParamField>
+
+---
+
+## UI
+
+<ParamField query="bc_voice_chat_nameplate_icon" type="int" default="1">
+  Show a microphone icon in a player's name plate while they are actively transmitting voice. `0` = off, `1` = on.
+</ParamField>
+
+---
+
+## Server
+
+<ParamField query="bc_voice_chat_server_address" type="string" default="managed">
+  Address of the voice relay server. The special value `managed` connects to the official BestClient-hosted relay. Set to a custom `host:port` to use a self-hosted server.
+</ParamField>
+
+---
+
+## Moderation & Per-Player Overrides
+
+<ParamField query="bc_voice_chat_muted_names" type="string" default="">
+  Comma-separated list of player names whose voice will be permanently silenced on your client. Name matching is case-insensitive. Example: `PlayerA,PlayerB,SomeGriefer`.
+</ParamField>
+
+<ParamField query="bc_voice_chat_name_volumes" type="string" default="">
+  Comma-separated `name=value` pairs that override the playback volume for individual players, in percent. Example: `FriendA=150,LoudPerson=30`. Matching is case-insensitive.
+</ParamField>

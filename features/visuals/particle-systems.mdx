@@ -1,0 +1,237 @@
+---
+title: "Particle Systems: Magic, 3D, Orbit Aura, Crystal Laser"
+sidebarTitle: "Particles"
+description: "BestClient's particle effects include Magic Particles, 3D ambient particles, Orbit Aura, and Crystal Laser for rifle and shotgun visualization."
+---
+
+BestClient ships four distinct particle systems that add ambient life and visual flair to your game session without requiring any external mods or asset packs. **Magic Particles** scatter small glowing sparks around your tee. **3D Particles** fill the game world with depth-sorted cubes, hearts, or a mix of both. **Orbit Aura** wraps orbiting particles around your character. **Crystal Laser** replaces the plain beam of the rifle and shotgun with a shard-and-glow crystal effect. Every system is independently toggled and fully tunable.
+
+---
+
+## Magic Particles
+
+Magic Particles emit small glowing sparks that radiate outward from your tee at a configurable radius. They can be set to different visual types and spawn counts to create effects ranging from a subtle twinkle to a dense magical burst.
+
+<CodeGroup>
+```cfg Enable with defaults
+bc_magic_particles 1
+```
+
+```cfg Dense ring
+bc_magic_particles 1
+bc_magic_particles_radius 80
+bc_magic_particles_size 6
+bc_magic_particles_alpha_delay 40
+bc_magic_particles_type 1
+bc_magic_particles_count 30
+```
+</CodeGroup>
+
+<ParamField query="bc_magic_particles" type="int" default="0">
+  Master toggle for Magic Particles. Set to `1` to spawn sparks around your tee. **Default:** `0` (disabled).
+</ParamField>
+
+<ParamField query="bc_magic_particles_radius" type="int" default="60">
+  Radius in game units within which sparks are spawned around your tee's origin. **Default:** `60`.
+</ParamField>
+
+<ParamField query="bc_magic_particles_size" type="int" default="4">
+  Visual size of each individual spark particle. **Default:** `4`.
+</ParamField>
+
+<ParamField query="bc_magic_particles_alpha_delay" type="int" default="30">
+  Time in ticks before a spark begins fading out after it is spawned. Lower values produce more ephemeral flashes. **Default:** `30`.
+</ParamField>
+
+<ParamField query="bc_magic_particles_type" type="int" default="1">
+  Visual shape/type of each spark. Different values correspond to different sprite styles. **Default:** `1`.
+</ParamField>
+
+<ParamField query="bc_magic_particles_count" type="int" default="20">
+  Number of sparks spawned per emission cycle. Higher values create a denser effect at the cost of GPU overhead. **Default:** `20`.
+</ParamField>
+
+---
+
+## 3D Particles
+
+3D Particles are depth-sorted ambient objects — cubes, hearts, or a mix — that float through the game world around the camera. They react to your tee's movement via a configurable push radius and strength, collide with each other, and support both custom and random color modes.
+
+<CodeGroup>
+```cfg Enable cubes
+bc_3d_particles 1
+bc_3d_particles_type 1
+bc_3d_particles_count 60
+```
+
+```cfg Mixed colored with glow
+bc_3d_particles 1
+bc_3d_particles_type 3
+bc_3d_particles_count 80
+bc_3d_particles_color_mode 2
+bc_3d_particles_glow 1
+bc_3d_particles_glow_alpha 40
+bc_3d_particles_glow_offset 3
+```
+
+```cfg Custom white, no collision
+bc_3d_particles 1
+bc_3d_particles_type 1
+bc_3d_particles_color_mode 1
+bc_3d_particles_collide 0
+bc_3d_particles_alpha 50
+```
+</CodeGroup>
+
+<ParamField query="bc_3d_particles" type="int" default="0">
+  Master toggle for 3D Particles. **Default:** `0` (disabled).
+</ParamField>
+
+<ParamField query="bc_3d_particles_type" type="int" default="1">
+  Shape of 3D particles. `1` = Cube, `2` = Heart, `3` = Mixed (alternates between cube and heart). **Range:** `1–3`. **Default:** `1`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_count" type="int" default="60">
+  Total number of active 3D particles in the world at once. **Range:** `1–200`. **Default:** `60`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_size_min" type="int" default="3">
+  Minimum size of a spawned particle. Each new particle picks a random size between `size_min` and `size_max`. **Range:** `2–200`. **Default:** `3`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_size_max" type="int" default="8">
+  Maximum size of a spawned particle. **Range:** `2–200`. **Default:** `8`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_speed" type="int" default="18">
+  Base movement speed of particles. **Range:** `1–500`. **Default:** `18`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_depth" type="int" default="300">
+  Z-depth range over which particles are distributed, creating the 3D parallax effect. Higher values spread particles further in depth. **Range:** `10–1000`. **Default:** `300`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_alpha" type="int" default="35">
+  Base opacity of particles, expressed as a percentage (1–100). **Range:** `1–100`. **Default:** `35`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_fade_in_ms" type="int" default="400">
+  Duration in milliseconds over which a newly spawned particle fades in. **Range:** `1–5000`. **Default:** `400`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_fade_out_ms" type="int" default="400">
+  Duration in milliseconds over which a dying particle fades out. **Range:** `1–5000`. **Default:** `400`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_push_radius" type="int" default="120">
+  Distance in game units at which the player's movement begins pushing nearby particles. **Range:** `0–1000`. **Default:** `120`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_push_strength" type="int" default="120">
+  How strongly the player's velocity displaces particles within the push radius. **Range:** `0–2000`. **Default:** `120`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_collide" type="int" default="1">
+  When `1`, particles bounce off each other. Set to `0` for better performance with high counts. **Default:** `1`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_view_margin" type="int" default="120">
+  Extra margin in game units outside the visible area before a particle is culled and recycled. **Range:** `0–1000`. **Default:** `120`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_color_mode" type="int" default="1">
+  Color assignment mode. `1` = Use the custom color set in `bc_3d_particles_color`. `2` = Assign each particle a random color on spawn. **Range:** `1–2`. **Default:** `1`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_color" type="color" default="0xFFFFFFFF">
+  RGBA color of particles when `bc_3d_particles_color_mode` is `1`. Supports alpha channel. **Default:** white, fully opaque.
+</ParamField>
+
+<ParamField query="bc_3d_particles_glow" type="int" default="0">
+  When `1`, renders a soft glow halo around each particle. **Default:** `0`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_glow_alpha" type="int" default="35">
+  Opacity of the glow halo (1–100). Active only when `bc_3d_particles_glow 1`. **Range:** `1–100`. **Default:** `35`.
+</ParamField>
+
+<ParamField query="bc_3d_particles_glow_offset" type="int" default="2">
+  Size offset of the glow halo relative to the particle body. Higher values create a larger halo. **Range:** `1–20`. **Default:** `2`.
+</ParamField>
+
+<Note>
+  The Optimizer setting `bc_optimizer_disable_particles 1` will suppress all BestClient particle systems, including 3D Particles, for maximum frame rate.
+</Note>
+
+---
+
+## Orbit Aura
+
+Orbit Aura places a ring of particles that continuously circle your tee like electrons around an atom. The ring can enter an idle state after a configurable timer, gradually dimming or stopping until you move again.
+
+<CodeGroup>
+```cfg Enable orbit aura
+bc_orbit_aura 1
+bc_orbit_aura_radius 60
+bc_orbit_aura_particles 8
+bc_orbit_aura_speed 80
+```
+
+```cfg With idle fade
+bc_orbit_aura 1
+bc_orbit_aura_radius 55
+bc_orbit_aura_particles 10
+bc_orbit_aura_alpha 70
+bc_orbit_aura_speed 60
+bc_orbit_aura_idle 1
+bc_orbit_aura_idle_timer 3000
+```
+</CodeGroup>
+
+<ParamField query="bc_orbit_aura" type="int" default="0">
+  Master toggle for Orbit Aura. **Default:** `0` (disabled).
+</ParamField>
+
+<ParamField query="bc_orbit_aura_radius" type="int" default="60">
+  Radius of the orbit ring in game units. **Default:** `60`.
+</ParamField>
+
+<ParamField query="bc_orbit_aura_particles" type="int" default="8">
+  Number of particles evenly spaced around the orbit ring. **Default:** `8`.
+</ParamField>
+
+<ParamField query="bc_orbit_aura_alpha" type="int" default="80">
+  Opacity of orbiting particles (0–100). **Default:** `80`.
+</ParamField>
+
+<ParamField query="bc_orbit_aura_speed" type="int" default="60">
+  Rotational speed of the orbit ring. Higher values spin the ring faster. **Default:** `60`.
+</ParamField>
+
+<ParamField query="bc_orbit_aura_idle" type="int" default="0">
+  When `1`, enables idle behaviour: the orbit aura dims or pauses after the player has been still for `bc_orbit_aura_idle_timer` milliseconds. **Default:** `0`.
+</ParamField>
+
+<ParamField query="bc_orbit_aura_idle_timer" type="int" default="3000">
+  Time in milliseconds of inactivity before the idle state activates (requires `bc_orbit_aura_idle 1`). **Default:** `3000`.
+</ParamField>
+
+---
+
+## Crystal Laser
+
+Crystal Laser is a single-toggle replacement for the standard rifle and shotgun beam rendering. When enabled, lasers are drawn with a crystalline shard geometry and a surrounding icy glow instead of a plain line, making them visually distinct at a glance.
+
+<CodeGroup>
+```cfg Enable crystal laser
+bc_crystal_laser 1
+```
+</CodeGroup>
+
+<ParamField query="bc_crystal_laser" type="int" default="0">
+  Replaces rifle and shotgun laser beams with a crystal-shard and icy-glow rendering style. Set to `1` to enable. **Default:** `0` (disabled).
+</ParamField>
+
+<Tip>
+  Crystal Laser can be toggled at runtime from the console without reconnecting to a server — just type `bc_crystal_laser 1` while in-game.
+</Tip>

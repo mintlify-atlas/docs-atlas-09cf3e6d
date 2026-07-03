@@ -1,0 +1,130 @@
+---
+title: "HUD Editor: Drag and Reposition HUD Modules Live"
+sidebarTitle: "HUD Editor"
+description: "The HUD Editor lets you drag music player, voice, chat, and vote HUD modules directly over live gameplay or demo playback without leaving the game."
+---
+
+The HUD Editor is a live overlay tool inside BestClient that lets you drag, scale, and configure individual HUD modules directly over your running game or demo playback — no need to quit, edit a config file, or restart. Every change you make is immediately visible in context so you can fine-tune positions relative to the actual action on screen. Positions are saved to your config as `bc_hud_*_x`, `bc_hud_*_y`, and `bc_hud_*_scale` variables the moment you release a dragged module.
+
+## Activating the HUD Editor
+
+The editor is managed by the `CHudEditor` component which exposes `Activate()` and `Deactivate()` methods. In practice you call it through a bind — set a key to `+hud_editor` in your config or through the BestClient settings to toggle the overlay on and off. The editor is available both in a live game and while watching a demo.
+
+<Steps>
+  <Step title="Bind a key">
+    Open **BestClient Settings → HUD Editor** and assign a keybind, or add it manually in your config.
+  </Step>
+  <Step title="Activate the overlay">
+    Press your bound key while in-game or in demo playback. A semi-transparent overlay appears over every editable module.
+  </Step>
+  <Step title="Drag modules into position">
+    Left-click and hold a highlighted module, then drag it anywhere on screen. The module snaps to sensible grid positions near screen edges.
+  </Step>
+  <Step title="Open module settings">
+    Right-click any module to open its settings popup, where you can adjust scale, toggle visibility, and reset position or settings independently.
+  </Step>
+  <Step title="Reset all or deactivate">
+    Press the **Reset All** button in the editor toolbar to restore every module to its default position, or press your bind again to close the editor.
+  </Step>
+</Steps>
+
+## Editable Modules
+
+The following five HUD modules can be repositioned and scaled with the HUD Editor. They correspond to `HudLayout::EModule` values `MODULE_MUSIC_PLAYER`, `MODULE_VOICE_TALKERS`, `MODULE_VOICE_STATUS`, `MODULE_CHAT`, and `MODULE_VOTES`.
+
+| Module | HudLayout Enum | Default Position |
+|---|---|---|
+| Music Player | `MODULE_MUSIC_PLAYER` | x 198, y 0 |
+| Voice HUD (talkers list) | `MODULE_VOICE_TALKERS` | x 4, y 122 |
+| Voice Mute Icons | `MODULE_VOICE_STATUS` | x 136, y 0 |
+| Chat | `MODULE_CHAT` | x 5, y 278 |
+| Votes | `MODULE_VOTES` | x 0, y 60 |
+
+## Position Config Variables
+
+All position and scale values written by the HUD Editor are stored in your BestClient config file. Coordinates are expressed on a **500 × 300 canvas** (`HudLayout::CANVAS_WIDTH` × `HudLayout::CANVAS_HEIGHT`) that is then scaled to your actual resolution.
+
+### Music Player
+
+<ParamField path="bc_hud_music_player_x" type="int" default="198">
+  Horizontal canvas position of the Music Player HUD module. Range: −1000 to 1000.
+</ParamField>
+
+<ParamField path="bc_hud_music_player_y" type="int" default="0">
+  Vertical canvas position of the Music Player HUD module. Range: −1000 to 1000.
+</ParamField>
+
+<ParamField path="bc_hud_music_player_scale" type="int" default="100">
+  Scale of the Music Player HUD module in percent. Range: 25 to 300.
+</ParamField>
+
+### Voice HUD
+
+<ParamField path="bc_hud_voice_hud_x" type="int" default="4">
+  Horizontal canvas position of the Voice HUD (talkers list) module. Range: −1000 to 1000.
+</ParamField>
+
+<ParamField path="bc_hud_voice_hud_y" type="int" default="122">
+  Vertical canvas position of the Voice HUD module. Range: −1000 to 1000.
+</ParamField>
+
+<ParamField path="bc_hud_voice_hud_scale" type="int" default="100">
+  Scale of the Voice HUD module in percent. Range: 25 to 300.
+</ParamField>
+
+### Voice Mute Icons
+
+<ParamField path="bc_hud_voice_mute_icons_x" type="int" default="136">
+  Horizontal canvas position of the Voice Mute Icons module. Range: −1000 to 1000.
+</ParamField>
+
+<ParamField path="bc_hud_voice_mute_icons_y" type="int" default="0">
+  Vertical canvas position of the Voice Mute Icons module. Range: −1000 to 1000.
+</ParamField>
+
+<ParamField path="bc_hud_voice_mute_icons_scale" type="int" default="100">
+  Scale of the Voice Mute Icons module in percent. Range: 25 to 300.
+</ParamField>
+
+### Chat
+
+<ParamField path="bc_hud_chat_x" type="int" default="5">
+  Horizontal canvas position of the in-game Chat module. Range: −1000 to 1000.
+</ParamField>
+
+<ParamField path="bc_hud_chat_y" type="int" default="278">
+  Vertical anchor canvas position of the in-game Chat module. Range: −1000 to 1000.
+</ParamField>
+
+<ParamField path="bc_hud_chat_scale" type="int" default="100">
+  Scale of the in-game Chat module in percent. Range: 25 to 300.
+</ParamField>
+
+### Votes
+
+<ParamField path="bc_hud_votes_x" type="int" default="0">
+  Horizontal canvas position of the Votes HUD module. Range: −1000 to 1000.
+</ParamField>
+
+<ParamField path="bc_hud_votes_y" type="int" default="60">
+  Vertical canvas position of the Votes HUD module. Range: −1000 to 1000.
+</ParamField>
+
+<ParamField path="bc_hud_votes_scale" type="int" default="100">
+  Scale of the Votes HUD module in percent. Range: 25 to 300.
+</ParamField>
+
+## Interaction Reference
+
+| Action | Effect |
+|---|---|
+| **Left-click drag** | Move the selected module freely; releases snap to grid |
+| **Right-click** | Open module settings popup (scale, toggle, reset position, reset settings) |
+| **Reset All button** | Calls `HudLayout::ResetEditableModules()` — restores all five modules to defaults |
+| **Toggle Module button** | Enable or disable the module from inside the popup |
+| **Reset Position button** | Restores only position/scale for the selected module |
+| **Reset Settings button** | Restores all non-position settings for the selected module |
+
+<Tip>
+  Position values are saved immediately on drag release as `bc_hud_*_x`, `bc_hud_*_y`, and `bc_hud_*_scale` in your config. You can copy these values between config profiles or share them with teammates by copying those lines from your `settings_ddnet.cfg`.
+</Tip>

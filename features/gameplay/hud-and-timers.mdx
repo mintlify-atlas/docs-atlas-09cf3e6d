@@ -1,0 +1,294 @@
+---
+title: "Speedrun Timer, Finish Prediction, Keystrokes HUD"
+sidebarTitle: "HUD & Timers"
+description: "BestClient's gameplay HUD tools: Speedrun Timer with auto-disable, Finish Prediction bar, Keystrokes overlay, Auto Team Lock, and Fast Actions radial menu."
+---
+
+BestClient adds a suite of in-game HUD overlays built around race and competitive gameplay. The **Speedrun Timer** gives you a configurable countdown with an auto-disable option when time runs out. **Finish Prediction** estimates your map-completion percentage and projected finish time in real time, displaying either a compact text readout or a progress bar. The **Keystrokes HUD** overlays your active inputs on screen with several presets for keyboard and mouse. **Auto Team Lock** automatically locks your team after joining so you never start a run accidentally. **Fast Actions** provides a radial command menu for rapid execution of frequently used console commands. The **Optimizer** features, including FPS Fog, keep frame rates consistent on large or complex maps.
+
+---
+
+## Speedrun Timer
+
+The Speedrun Timer renders a countdown clock directly on the HUD. Configure the starting time by setting hours, minutes, seconds, and milliseconds individually, or use the combined `bc_speedrun_timer_time` field in MMSS format for quick entry.
+
+<ParamField query="bc_speedrun_timer" type="int" default="0">
+  Enables the Speedrun Timer overlay (`1` to enable).
+</ParamField>
+
+<ParamField query="bc_speedrun_timer_time" type="int" default="0">
+  Sets the timer starting time in MMSS format (for example, `130` = 1 minute 30 seconds). Range: `0–9999`.
+</ParamField>
+
+<ParamField query="bc_speedrun_timer_hours" type="int" default="0">
+  Hours component of the starting time. Range: `0–99`.
+</ParamField>
+
+<ParamField query="bc_speedrun_timer_minutes" type="int" default="0">
+  Minutes component of the starting time. Range: `0–59`.
+</ParamField>
+
+<ParamField query="bc_speedrun_timer_seconds" type="int" default="0">
+  Seconds component of the starting time. Range: `0–59`.
+</ParamField>
+
+<ParamField query="bc_speedrun_timer_milliseconds" type="int" default="0">
+  Milliseconds component of the starting time. Range: `0–999`.
+</ParamField>
+
+<ParamField query="bc_speedrun_timer_auto_disable" type="int" default="0">
+  When enabled (`1`), the Speedrun Timer automatically disables itself once the countdown reaches zero. Useful for races with a strict time limit where you want the overlay to disappear cleanly at the end.
+</ParamField>
+
+---
+
+## Finish Prediction
+
+Finish Prediction estimates how far through the map your character has progressed and projects your final finish time based on current pace. It samples your position relative to known checkpoints and calculates a completion percentage, then extrapolates a predicted finish time from your average speed. The feature works across both classic and progress-bar display modes, with full control over which metrics are shown.
+
+<ParamField query="bc_finish_prediction" type="int" default="0">
+  Enables the Finish Prediction overlay (`1` to enable).
+</ParamField>
+
+<ParamField query="bc_finish_prediction_mode" type="int" default="0">
+  Controls the HUD layout for Finish Prediction:
+  - `0` — Classic text readout
+  - `1` — Progress bar
+</ParamField>
+
+<ParamField query="bc_finish_prediction_show_always" type="int" default="1">
+  When enabled (`1`), the Finish Prediction overlay is visible even before the race has officially started. Set to `0` to hide it until the start tile is crossed.
+</ParamField>
+
+<ParamField query="bc_finish_prediction_time_mode" type="int" default="0">
+  Determines which time value is displayed:
+  - `0` — Time remaining until predicted finish
+  - `1` — Absolute predicted finish time
+</ParamField>
+
+<ParamField query="bc_finish_prediction_show_time" type="int" default="1">
+  Toggles display of the predicted time value (`1` to show).
+</ParamField>
+
+<ParamField query="bc_finish_prediction_show_percentage" type="int" default="1">
+  Toggles display of the map completion percentage (`1` to show).
+</ParamField>
+
+<ParamField query="bc_finish_prediction_show_millis" type="int" default="1">
+  Toggles display of milliseconds in the predicted time (`1` to show).
+</ParamField>
+
+<ParamField query="bc_finish_prediction_bar_custom_color" type="int" default="0">
+  When enabled (`1`), the progress bar uses the color defined by `bc_finish_prediction_bar_color` instead of the default theme color.
+</ParamField>
+
+<ParamField query="bc_finish_prediction_bar_color" type="color" default="0xFFFFFFFF">
+  The custom RGBA color for the Finish Prediction progress bar. Only used when `bc_finish_prediction_bar_custom_color` is `1`.
+</ParamField>
+
+---
+
+## Keystrokes HUD
+
+The Keystrokes HUD renders your current keyboard and mouse inputs as an on-screen overlay. Keyboard and mouse displays are independent, each with their own enable toggle and preset selector.
+
+### Keyboard
+
+<ParamField query="bc_keystrokes_keyboard" type="int" default="0">
+  Enables the keyboard keystrokes overlay (`1` to enable).
+</ParamField>
+
+<ParamField query="bc_keystrokes_keyboard_preset" type="int" default="0">
+  Selects the keyboard overlay layout:
+  - `0` — `wasd-minimal` (W/A/S/D keys only, compact)
+  - `1` — `wasd-full` (W/A/S/D plus additional keys)
+  - `2` — `micro` (minimal single-key view)
+</ParamField>
+
+### Mouse
+
+<ParamField query="bc_keystrokes_mouse" type="int" default="0">
+  Enables the mouse keystrokes overlay (`1` to enable).
+</ParamField>
+
+<ParamField query="bc_keystrokes_mouse_preset" type="int" default="0">
+  Selects the mouse overlay layout:
+  - `0` — `mouse-dot` (cursor position dot with buttons)
+  - `1` — `mouse-arrow` (arrow pointer style)
+  - `2` — `mouse-dot-dot` (dual-dot layout)
+  - `3` — `mouse-dot-no-box` (dot without bounding box)
+  - `4` — `mouse-no-movement` (buttons only, no cursor indicator)
+</ParamField>
+
+---
+
+## Auto Team Lock
+
+Auto Team Lock automatically issues the team-lock command a configurable number of seconds after you join a team, preventing accidental early starts when other players are still joining.
+
+<ParamField query="bc_auto_team_lock" type="int" default="0">
+  Enables Auto Team Lock (`1` to enable).
+</ParamField>
+
+<ParamField query="bc_auto_team_lock_delay" type="int" default="5">
+  Seconds to wait after joining a team before the lock is applied automatically. Range: `0–30`. Set to `0` to lock immediately upon joining.
+</ParamField>
+
+---
+
+## Optimizer & FPS Fog
+
+The Optimizer groups several rendering performance features. FPS Fog culls non-map rendering beyond a configurable radius around the camera, which is especially effective on large KoG and gores maps with many players.
+
+<ParamField query="bc_optimizer" type="int" default="0">
+  Master toggle for all Optimizer features (`1` to enable).
+</ParamField>
+
+<ParamField query="bc_optimizer_disable_particles" type="int" default="0">
+  When enabled (`1`), disables rendering and updating of all particle effects entirely.
+</ParamField>
+
+<ParamField query="bc_optimizer_fps_fog" type="int" default="0">
+  When enabled (`1`), culls non-map rendering (players, effects, entities) outside a distance limit around the camera center.
+</ParamField>
+
+<ParamField query="bc_optimizer_fps_fog_mode" type="int" default="0">
+  Controls how the FPS Fog radius is determined:
+  - `0` — Manual radius in tiles (`bc_optimizer_fps_fog_radius_tiles`)
+  - `1` — Radius derived from current zoom level (`bc_optimizer_fps_fog_zoom_percent`)
+</ParamField>
+
+<ParamField query="bc_optimizer_fps_fog_radius_tiles" type="int" default="40">
+  Radius of the FPS Fog cull zone in tiles (one tile = 32 units). Range: `5–300`. Used when fog mode is `0`.
+</ParamField>
+
+<ParamField query="bc_optimizer_fps_fog_zoom_percent" type="int" default="70">
+  Percentage of the visible screen area to keep rendered when fog mode is `1`. Range: `10–120`.
+</ParamField>
+
+---
+
+## Fast Actions
+
+Fast Actions is a radial command menu that appears on screen when triggered, letting you execute frequently used console commands with a single cursor movement and release. It supports up to 64 binds and saves them automatically to your config.
+
+### Console Commands
+
+<CardGroup cols={2}>
+  <Card title="open_fa" icon="circle-dot">
+    Opens the Fast Actions radial menu. Bind this to a convenient key; releasing the key (or pressing it again depending on bind type) executes the hovered action.
+  </Card>
+  <Card title="add_fa" icon="plus">
+    Adds a new entry to the Fast Actions menu. Usage: `add_fa "Label" "command"`. The label appears in the radial and the command is executed on selection.
+  </Card>
+  <Card title="remove_fa" icon="minus">
+    Removes an existing Fast Actions entry by name or command. Usage: `remove_fa "Label" "command"`.
+  </Card>
+  <Card title="fa_execute_hover" icon="play">
+    Immediately executes whichever Fast Actions entry the cursor is currently hovering over, without closing the menu. Useful for scripted or macro-driven workflows.
+  </Card>
+</CardGroup>
+
+### Admin Panel Fast Actions
+
+The Admin Panel also exposes ten dedicated fast-action command slots that appear as quick buttons in the admin interface. These are stored as string config variables:
+
+<ParamField query="bc_admin_fast_action0" type="string" default="">
+  Admin panel fast action command slot 1. Accepts any valid console command string (max 96 characters).
+</ParamField>
+
+<ParamField query="bc_admin_fast_action1" type="string" default="">
+  Admin panel fast action command slot 2.
+</ParamField>
+
+<ParamField query="bc_admin_fast_action2" type="string" default="">
+  Admin panel fast action command slot 3.
+</ParamField>
+
+<ParamField query="bc_admin_fast_action3" type="string" default="">
+  Admin panel fast action command slot 4.
+</ParamField>
+
+<ParamField query="bc_admin_fast_action4" type="string" default="">
+  Admin panel fast action command slot 5.
+</ParamField>
+
+<ParamField query="bc_admin_fast_action5" type="string" default="">
+  Admin panel fast action command slot 6.
+</ParamField>
+
+<ParamField query="bc_admin_fast_action6" type="string" default="">
+  Admin panel fast action command slot 7.
+</ParamField>
+
+<ParamField query="bc_admin_fast_action7" type="string" default="">
+  Admin panel fast action command slot 8.
+</ParamField>
+
+<ParamField query="bc_admin_fast_action8" type="string" default="">
+  Admin panel fast action command slot 9.
+</ParamField>
+
+<ParamField query="bc_admin_fast_action9" type="string" default="">
+  Admin panel fast action command slot 10.
+</ParamField>
+
+---
+
+## Config Examples
+
+<Tabs>
+  <Tab title="Speedrun Timer (90 seconds)">
+    ```cfg
+    bc_speedrun_timer 1
+    bc_speedrun_timer_minutes 1
+    bc_speedrun_timer_seconds 30
+    bc_speedrun_timer_auto_disable 1
+    ```
+  </Tab>
+  <Tab title="Finish Prediction Bar">
+    ```cfg
+    bc_finish_prediction 1
+    bc_finish_prediction_mode 1
+    bc_finish_prediction_show_always 1
+    bc_finish_prediction_time_mode 0
+    bc_finish_prediction_show_time 1
+    bc_finish_prediction_show_percentage 1
+    bc_finish_prediction_show_millis 1
+    bc_finish_prediction_bar_custom_color 1
+    ```
+  </Tab>
+  <Tab title="Keystrokes HUD">
+    ```cfg
+    bc_keystrokes_keyboard 1
+    bc_keystrokes_keyboard_preset 0
+    bc_keystrokes_mouse 1
+    bc_keystrokes_mouse_preset 1
+    ```
+  </Tab>
+  <Tab title="Optimizer (FPS Fog, manual radius)">
+    ```cfg
+    bc_optimizer 1
+    bc_optimizer_fps_fog 1
+    bc_optimizer_fps_fog_mode 0
+    bc_optimizer_fps_fog_radius_tiles 50
+    bc_optimizer_disable_particles 0
+    ```
+  </Tab>
+  <Tab title="Fast Actions setup">
+    ```cfg
+    bind f open_fa
+    add_fa "Kill" "kill"
+    add_fa "Spectate" "spectate"
+    add_fa "Team +1" "team 1"
+    ```
+  </Tab>
+</Tabs>
+
+<Note>
+  Finish Prediction accuracy improves over the course of a run as more checkpoint data is gathered. The prediction shown before any checkpoints are crossed is an initial estimate and may be less reliable on maps with highly variable pacing.
+</Note>
+
+<Tip>
+  Pair **Auto Team Lock** (`bc_auto_team_lock 1`) with a short delay (`bc_auto_team_lock_delay 3`) so your team locks automatically three seconds after the last player joins, giving everyone time to ready up without any manual `/lock` command.
+</Tip>

@@ -1,0 +1,145 @@
+---
+title: "HUD Configuration: Module Positions and Scale"
+sidebarTitle: "HUD Config"
+description: "All bc_hud_* config variables controlling the position and scale of BestClient HUD modules: music player, voice, mute icons, chat, and votes."
+---
+
+BestClient's HUD system lets you reposition and rescale every custom overlay module independently. Positions are expressed as pixel offsets from each module's default anchor point, and scale is a percentage of the default size. The easiest way to adjust these values is through the interactive [HUD Editor](/features/editors/hud-editor), which allows drag-and-drop repositioning with a live preview. If you prefer to edit values directly, the variables below can be set in the in-game console or written into `settings_ddnet.cfg`.
+
+<Tip>
+  HUD position variables that do not have `CFGFLAG_SAVE` are reset to their defaults on each client launch. The HUD Editor saves the state for you automatically — if you edit them manually, add them to `settings_ddnet.cfg` to persist across sessions.
+</Tip>
+
+---
+
+## Music Player HUD
+
+<ParamField query="bc_hud_music_player_x" type="int" default="198">
+  Horizontal position of the Music Player HUD module, in pixels from the default anchor. Range: `-1000`–`1000`.
+</ParamField>
+
+<ParamField query="bc_hud_music_player_y" type="int" default="0">
+  Vertical position of the Music Player HUD module, in pixels from the default anchor. Range: `-1000`–`1000`.
+</ParamField>
+
+<ParamField query="bc_hud_music_player_scale" type="int" default="100">
+  Scale of the Music Player HUD module as a percentage of its default size. Range: `25`–`300`.
+</ParamField>
+
+---
+
+## Voice HUD
+
+<ParamField query="bc_hud_voice_hud_x" type="int" default="4">
+  Horizontal position of the Voice HUD module (active speakers list). Range: `-1000`–`1000`.
+</ParamField>
+
+<ParamField query="bc_hud_voice_hud_y" type="int" default="122">
+  Vertical position of the Voice HUD module. Range: `-1000`–`1000`.
+</ParamField>
+
+<ParamField query="bc_hud_voice_hud_scale" type="int" default="100">
+  Scale of the Voice HUD module as a percentage of its default size. Range: `25`–`300`.
+</ParamField>
+
+---
+
+## Mute Icons
+
+<ParamField query="bc_hud_voice_mute_icons_x" type="int" default="136">
+  Horizontal position of the microphone and headphones mute status icons. Range: `-1000`–`1000`.
+</ParamField>
+
+<ParamField query="bc_hud_voice_mute_icons_y" type="int" default="0">
+  Vertical position of the mute status icons. Range: `-1000`–`1000`.
+</ParamField>
+
+<ParamField query="bc_hud_voice_mute_icons_scale" type="int" default="100">
+  Scale of the mute status icons as a percentage of their default size. Range: `25`–`300`.
+</ParamField>
+
+---
+
+## Chat HUD
+
+<ParamField query="bc_hud_chat_x" type="int" default="5">
+  Horizontal position of the in-game chat panel. Range: `-1000`–`1000`.
+</ParamField>
+
+<ParamField query="bc_hud_chat_y" type="int" default="278">
+  Vertical anchor position of the in-game chat panel. Range: `-1000`–`1000`.
+</ParamField>
+
+<ParamField query="bc_hud_chat_scale" type="int" default="100">
+  Scale of the in-game chat panel as a percentage of its default size. Range: `25`–`300`.
+</ParamField>
+
+---
+
+## Votes HUD
+
+<ParamField query="bc_hud_votes_x" type="int" default="0">
+  Horizontal position of the vote notification panel. Range: `-1000`–`1000`.
+</ParamField>
+
+<ParamField query="bc_hud_votes_y" type="int" default="60">
+  Vertical position of the vote notification panel. Range: `-1000`–`1000`.
+</ParamField>
+
+<ParamField query="bc_hud_votes_scale" type="int" default="100">
+  Scale of the vote notification panel as a percentage of its default size. Range: `25`–`300`.
+</ParamField>
+
+---
+
+## HUD Visibility
+
+<ParamField query="bc_hide_hud_in_settings" type="int" default="0">
+  Hide all HUD elements while the settings page is open, giving a clean preview of the map and game. `0` = off, `1` = on.
+</ParamField>
+
+---
+
+## Real Hitbox Indicator
+
+<ParamField query="bc_show_real_hitbox" type="int" default="0">
+  Render a small dot at the exact center of your character's server-side hitbox. Useful for precise positioning practice. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_show_real_hitbox_color" type="color" default="0xFFFFFFFF">
+  ARGB color of the real hitbox center dot. Supports alpha. Default is opaque white.
+</ParamField>
+
+---
+
+## Dummy Coordinate Indicator
+
+The dummy coordinate indicator draws a marker on your HUD showing the relative vertical position of a second player (typically your dummy).
+
+<ParamField query="bc_showhud_dummy_coord_indicator" type="int" default="0">
+  Show a player-position indicator in the in-game HUD. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_showhud_dummy_coord_indicator_color" type="color" default="65407">
+  ARGB color of the indicator when the tracked player is not at the same height as you.
+</ParamField>
+
+<ParamField query="bc_showhud_dummy_coord_indicator_same_height_color" type="color" default="5635967">
+  ARGB color of the indicator when the tracked player is aligned at the same vertical position as you.
+</ParamField>
+
+---
+
+## Manual Config File Editing
+
+If you prefer to edit HUD positions without opening the game, locate `settings_ddnet.cfg` in your `$USERDIR` and add or update lines like the following:
+
+```cfg
+bc_hud_music_player_x 50
+bc_hud_music_player_y 10
+bc_hud_music_player_scale 80
+bc_hud_chat_x 10
+bc_hud_chat_y 300
+```
+
+Save the file while the client is closed, then launch BestClient to see the updated positions.

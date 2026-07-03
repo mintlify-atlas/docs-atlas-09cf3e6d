@@ -1,0 +1,60 @@
+---
+title: "BestClient Configuration Reference Overview"
+sidebarTitle: "Overview"
+description: "All BestClient settings use the bc_* prefix and are saved to settings_ddnet.cfg. This reference covers types, defaults, value ranges, and file locations."
+---
+
+BestClient extends the standard DDNet configuration system with a dedicated set of `bc_*` variables that control every custom feature — from visual effects and input modes to voice chat and the admin panel. All settings are written to `settings_ddnet.cfg` in your user data directory and are loaded automatically on startup. You can change any value live from the in-game console without restarting.
+
+## How the Config System Works
+
+Every `bc_*` variable is stored in `settings_ddnet.cfg` inside your `$USERDIR`. The file is loaded on client start and saved when you quit or change a setting through the UI. You can also edit the file directly in a text editor while the client is closed.
+
+### Setting a Value
+
+Open the in-game console with **F1** (or the key bound to `toggle_local_console`) and type the variable name followed by its value:
+
+```cfg
+bc_camera_drift 1
+bc_camera_drift_amount 300
+```
+
+To make a change permanent without using the UI, add the same lines to `settings_ddnet.cfg` and save the file before launching the client.
+
+<Tip>
+  Any value you set through the in-game console is automatically written back to `settings_ddnet.cfg` when the client exits, so your settings persist across launches without any manual file editing.
+</Tip>
+
+## Variable Types
+
+| Type | Description | Example |
+|------|-------------|---------|
+| **INT** | Integer value, always has a minimum and maximum | `bc_voice_chat_volume 100` |
+| **STR** | String value, has a maximum character length | `bc_chat_media_allowed_domains "tenor.com; imgur.com"` |
+| **COL** | Color stored as an ARGB integer | `bc_adminpanel_bg_color 0x8C000000` |
+
+Color variables (`COL`) accept a 32-bit ARGB integer. The easiest way to set them is through the in-game color pickers, which write the correct integer value automatically.
+
+## Storage Paths
+
+BestClient uses the same three-path search order as DDNet, defined in `storage.cfg`:
+
+| Variable | Platform | Typical Path |
+|----------|----------|--------------|
+| `$USERDIR` | Windows | `%APPDATA%\DDNet` |
+| `$USERDIR` | macOS | `~/Library/Application Support/DDNet` |
+| `$USERDIR` | Linux | `~/.local/share/DDNet` |
+| `$DATADIR` | All | The `data/` folder next to the executable |
+| `$CURRENTDIR` | All | The current working directory |
+
+Paths are searched top-down — `$USERDIR` has the highest priority and is also where all user data (screenshots, settings, demos) is saved.
+
+## Config Pages
+
+Use the links below to jump to a specific category of `bc_*` variables:
+
+- **[Visuals](/config/visuals)** — Camera, particles, tee effects, ReShade, media backgrounds, UI visuals, and animations
+- **[Input](/config/input)** — Fast Input, Delta Input, Best Input, Saiko+, Snap Tap, 45 Degrees, Small Sens, and keystrokes display
+- **[Voice Chat](/config/voice-chat)** — Activation, VAD, audio devices, proximity radius, mute lists, and UI
+- **[HUD](/config/hud)** — Module positions and scale for the music player, voice, mute icons, chat, and votes panels
+- **[Social & Utility](/config/social-utility)** — Chat Media, Client Indicator, server browser, streamer mode, admin panel, and more

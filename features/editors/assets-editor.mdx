@@ -1,0 +1,72 @@
+---
+title: "Assets Editor: Mix and Export Custom Asset Packs"
+sidebarTitle: "Assets Editor"
+description: "The Assets Editor provides a fullscreen interface for mixing game assets, preparing exports, and jumping into the name plate workflow from inside BestClient."
+---
+
+The Assets Editor is a native fullscreen editor built into BestClient for creating, mixing, and exporting custom asset packs without needing external image editors or manual file management. It integrates directly with the BestClient Shop so that anything you download lands immediately in your assets directory and shows up in the editor, ready to combine with other pieces. Whether you are crafting a personal skin, assembling a name plate set, or preparing a complete asset pack to share, the Assets Editor provides the workspace to do it all from inside the client.
+
+## Opening the Assets Editor
+
+You can reach the Assets Editor through two entry points:
+
+- **Main Menu → Assets Editor** button in the BestClient section of the main menu.
+- **BestClient Settings** — an open-editor shortcut may appear in relevant settings sections depending on context.
+
+The editor opens in fullscreen, replacing the menu background with a dedicated editing canvas.
+
+## Editable Asset Types
+
+The Assets Editor supports the following categories of game assets:
+
+| Asset Type | Description |
+|---|---|
+| **Skins** | Tee body, eyes, feet, hands, and decoration layers |
+| **Name Plates** | Per-player name plate layouts and styling, with a dedicated name plate workflow |
+| **Particle Sets** | Custom particle sprites used by BestClient's visual systems |
+| **HUD Elements** | HUD panel textures, icons, and overlay graphics |
+| **Entities** | Map entity icons used by DDNet entity layers |
+
+## Name Plate Workflow
+
+The name plate workflow is a first-class path in the Assets Editor. Open it via the **Name Plates** category to define per-player visual rules, adjust layering, and preview how name plates appear over different tee colours before exporting.
+
+## Mixing Assets
+
+The editor allows you to layer assets from different packs — for example combining a skin base from one shop download with particle and HUD elements from another. The mixing system is non-destructive: your source files are not modified, and the result is written to a new export file when you are ready.
+
+## Exporting Asset Packs
+
+<Steps>
+  <Step title="Build your asset set">
+    Select the asset types you want to include and configure each piece in the editor canvas.
+  </Step>
+  <Step title="Preview in context">
+    Use the live preview pane to see how your assets look against actual DDNet gameplay elements and map styles.
+  </Step>
+  <Step title="Export">
+    Press **Export** to write the final asset files to your DDNet data directory in the standard DDNet asset pack format.
+  </Step>
+</Steps>
+
+<Note>
+  Exported asset packs use the standard DDNet asset pack format and are fully compatible with vanilla DDNet clients. You can distribute exported packs to players who do not use BestClient.
+</Note>
+
+## Integration with the Shop
+
+Assets downloaded through the BestClient Shop are placed directly into the appropriate data subdirectory (`skins/`, `assets/`, `mapres/`, etc.). The next time you open the Assets Editor those files appear in the relevant category browser automatically, with no manual copying required. This makes it easy to build a pack from several Shop downloads in a single editor session.
+
+## Asset Directory Layout
+
+After installing Shop assets or exporting from the editor, your data folder will contain files organised by type:
+
+```
+data/
+  skins/          ← skin PNG files
+  assets/         ← HUD and entity asset packs
+  mapres/         ← map resource overrides
+  particles/      ← custom particle sheets
+```
+
+Items placed in these directories are picked up by the DDNet rendering engine on the next map load or client restart, depending on asset type.

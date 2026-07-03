@@ -1,0 +1,177 @@
+---
+title: "Movement Tools: 45 Degrees, Small Sens, Hook Combo, Gores Mode"
+sidebarTitle: "Movement Tools"
+description: "Competitive movement aids in BestClient: 45-degree lock, small sensitivity mode, Snap Tap, Hook Combo popups, Gores Mode, and the Focus Mode keybind."
+---
+
+BestClient bundles a set of movement-focused tools that competitive DDNet players frequently rely on during runs and PvP. The **45 Degrees** bind locks your cursor to diagonal angles for precise trajectory control, **Small Sens** lets you drop to a lower sensitivity on demand for delicate micro-adjustments, **Hook Combo** tracks sequential hooks and rewards combos with popups and audio feedback, and **Gores Mode** adapts the entity display for KoG and gores-style maps. All tools can be toggled live through bound console commands, keeping your normal gameplay uninterrupted until you need them.
+
+---
+
+## 45 Degrees
+
+The 45 Degrees tool constrains your mouse movement to the eight standard 45° axes (right, up-right, up, up-left, left, down-left, down, down-right). Activating it swaps out your current mouse sensitivity and max-distance settings for dedicated saved values, then restores them on deactivation.
+
+<ParamField query="bc_toggle_45_degrees" type="int" default="0">
+  Controls the bind behavior for 45 Degrees:
+  - `0` — Hold mode: 45° locking is active only while the bind key is held.
+  - `1` — Toggle mode: one press enables, the next press disables.
+</ParamField>
+
+<ParamField query="bc_prev_mouse_max_distance_45_degrees" type="int" default="400">
+  Stores the maximum cursor distance used while 45 Degrees is active. Range: `0–5000`. This is managed automatically by the bind but can be set manually for a specific feel.
+</ParamField>
+
+<ParamField query="bc_prev_inp_mousesens_45_degrees" type="int" default="200">
+  Stores the mouse sensitivity used while 45 Degrees is active. Range: `1–1000000`. The bind saves and restores your normal sensitivity around this value.
+</ParamField>
+
+### Binding 45 Degrees
+
+Use the `toggle_45_degrees` console command to bind the feature to any key:
+
+```cfg
+bind x toggle_45_degrees
+```
+
+<Note>
+  Setting `bc_toggle_45_degrees 1` turns the bind into a persistent toggle instead of a hold. Choose whichever feels more natural for your play style.
+</Note>
+
+---
+
+## Small Sens
+
+Small Sens temporarily drops your mouse sensitivity to a saved lower value, useful for aiming at distant targets or performing precision hooks without switching your global sensitivity setting.
+
+<ParamField query="bc_toggle_small_sens" type="int" default="0">
+  Controls the bind behavior for Small Sens:
+  - `0` — Hold mode: reduced sensitivity is active only while the bind key is held.
+  - `1` — Toggle mode: one press enables, the next press disables.
+</ParamField>
+
+<ParamField query="bc_prev_inp_mousesens_small_sens" type="int" default="200">
+  Stores the reduced sensitivity value used while Small Sens is active. Range: `1–1000000`. Adjust this to whatever lower sensitivity feels right for precision tasks.
+</ParamField>
+
+### Binding Small Sens
+
+Use the `toggle_small_sens` console command:
+
+```cfg
+bind z toggle_small_sens
+```
+
+---
+
+## Hook Combo
+
+Hook Combo tracks how many sequential hooks or hammer hits your character lands on other players within a reset window. When a streak continues, an animated popup appears on screen and a combo sound plays. The feature is purely cosmetic and does not affect gameplay mechanics.
+
+<ParamField query="bc_hook_combo" type="int" default="0">
+  Enables the Hook Combo overlay and sound system (`1` to enable).
+</ParamField>
+
+<ParamField query="bc_hook_combo_mode" type="int" default="0">
+  Determines which actions count toward the combo:
+  - `0` — Hook hits only
+  - `1` — Hammer hits only
+  - `2` — Both hook and hammer hits
+</ParamField>
+
+<ParamField query="bc_hook_combo_reset_time" type="int" default="1200">
+  Time in milliseconds between hooks before the combo counter resets. Range: `100–5000`. If no new hit lands within this window, the counter returns to zero.
+</ParamField>
+
+<ParamField query="bc_hook_combo_sound_volume" type="int" default="100">
+  Volume of the combo sound effect, as a percentage of the global sound volume. Range: `0–100`.
+</ParamField>
+
+<ParamField query="bc_hook_combo_size" type="int" default="100">
+  Size of the combo popup overlay as a percentage of the default size. Range: `50–200`.
+</ParamField>
+
+---
+
+## Gores Mode
+
+Gores Mode redraws entity tiles to match the visual style of KoG gores maps, giving you a cleaner read of the map geometry during gores runs. It automatically deactivates when you switch to weapons that are commonly used outside gores contexts.
+
+<ParamField query="bc_gores_mode" type="int" default="0">
+  Enables the entity-like gores rendering mode (`1` to enable).
+</ParamField>
+
+<ParamField query="bc_gores_mode_disable_weapons" type="int" default="1">
+  When enabled (`1`), Gores Mode automatically turns itself off whenever you hold the shotgun, grenade launcher, or laser rifle. This prevents the gores display from interfering during combat or non-gores sections of a map.
+</ParamField>
+
+---
+
+## Spec Moved Notify
+
+<ParamField query="bc_spec_moved_notify" type="int" default="0">
+  When enabled (`1`), displays a warning message on screen if another player hooks or damages your character while you are in spectator mode. Useful in team runs to know when your dummy or in-game body is being interacted with.
+</ParamField>
+
+---
+
+## Console Commands Reference
+
+The following console commands are registered by BestClient and can be bound to any key:
+
+<CardGroup cols={2}>
+  <Card title="toggle_45_degrees" icon="arrows-to-dot">
+    Activates or deactivates 45-degree cursor lock according to the `bc_toggle_45_degrees` mode setting.
+  </Card>
+  <Card title="toggle_small_sens" icon="computer-mouse">
+    Activates or deactivates reduced mouse sensitivity according to the `bc_toggle_small_sens` mode setting.
+  </Card>
+  <Card title="toggle_deepfly" icon="person-falling">
+    Toggles the deepfly input mode on or off.
+  </Card>
+  <Card title="toggle_cinematic_camera" icon="video">
+    Toggles the smooth cinematic camera movement in spectator freeview (see `bc_cinematic_camera`).
+  </Card>
+  <Card title="save_rollback" icon="floppy-disk">
+    Saves a rollback checkpoint for supported server-side rollback features.
+  </Card>
+</CardGroup>
+
+---
+
+## Bind Examples
+
+<Steps>
+  <Step title="Bind 45 Degrees to X">
+    ```cfg
+    bind x toggle_45_degrees
+    ```
+    Press and hold `X` to lock your aim to 45° diagonals (hold mode), or press once to toggle (if `bc_toggle_45_degrees 1`).
+  </Step>
+  <Step title="Bind Small Sens to Z">
+    ```cfg
+    bind z toggle_small_sens
+    ```
+    Press and hold `Z` to drop to your saved small sensitivity value.
+  </Step>
+  <Step title="Enable Hook Combo with hammer support">
+    ```cfg
+    bc_hook_combo 1
+    bc_hook_combo_mode 2
+    bc_hook_combo_reset_time 1000
+    bc_hook_combo_sound_volume 80
+    ```
+    Tracks both hook and hammer hits, resets after 1 second of inactivity, and plays combo sounds at 80% volume.
+  </Step>
+  <Step title="Enable Gores Mode">
+    ```cfg
+    bc_gores_mode 1
+    bc_gores_mode_disable_weapons 1
+    ```
+    Activates gores rendering and automatically disables it when switching to shotgun, grenade, or laser.
+  </Step>
+</Steps>
+
+<Tip>
+  You can combine 45 Degrees and Small Sens on the same key or separate keys depending on your play style. Many players prefer separate binds so both tools can be active simultaneously during hook-flight sequences.
+</Tip>

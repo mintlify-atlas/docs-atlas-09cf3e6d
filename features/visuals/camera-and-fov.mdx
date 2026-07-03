@@ -1,0 +1,172 @@
+---
+title: "Camera Drift, Dynamic FOV, and Cinematic Camera"
+sidebarTitle: "Camera & FOV"
+description: "Configure BestClient's camera effects including smooth Camera Drift, Dynamic FOV scaling, Cinematic Camera for spectator, and Custom Aspect Ratio."
+---
+
+BestClient extends DDNet's default camera with four independent systems: a procedural **Camera Drift** that gently sways the viewport as you move, a **Dynamic FOV** that widens your field of view at speed, a **Cinematic Camera** mode that smooths spectator freeview movement, and a **Custom Aspect Ratio** tool that lets you letter-box the game to any ratio from classic 4:3 to ultrawide presets. All four are configured independently and can coexist without conflict.
+
+---
+
+## Camera Drift
+
+Camera Drift applies a subtle oscillating offset to the camera that follows your velocity direction, giving movement a natural, floaty feel. Strength, smoothness, and direction are all tunable.
+
+<CodeGroup>
+```cfg Minimal enable
+bc_camera_drift 1
+bc_camera_drift_amount 50
+```
+
+```cfg Full configuration
+bc_camera_drift 1
+bc_camera_drift_amount 50
+bc_camera_drift_smoothness 60
+bc_camera_drift_reverse 0
+```
+</CodeGroup>
+
+<ParamField query="bc_camera_drift" type="int" default="0">
+  Master toggle for Camera Drift. Set to `1` to enable the oscillating camera offset. **Default:** `0` (disabled).
+</ParamField>
+
+<ParamField query="bc_camera_drift_amount" type="int" default="50">
+  How large the drift displacement is. Higher values produce a more pronounced sway. **Range:** `0–100`. **Default:** `50`.
+</ParamField>
+
+<ParamField query="bc_camera_drift_smoothness" type="int" default="60">
+  Controls how quickly the drift follows velocity changes. Lower values feel snappier; higher values create a laggy, cinematic float. **Range:** `0–100`. **Default:** `60`.
+</ParamField>
+
+<ParamField query="bc_camera_drift_reverse" type="int" default="0">
+  When set to `1`, inverts the drift direction so the camera lags behind movement instead of leading it. **Default:** `0`.
+</ParamField>
+
+<Tip>
+  Start with `bc_camera_drift_amount 30` and `bc_camera_drift_smoothness 70` for a subtle effect that doesn't interfere with aiming.
+</Tip>
+
+---
+
+## Dynamic FOV
+
+Dynamic FOV automatically expands the visible game area as your tee accelerates and contracts it when standing still. The transition speed is controlled separately from the maximum expansion amount.
+
+<CodeGroup>
+```cfg Enable with defaults
+bc_dynamic_fov 1
+```
+
+```cfg Aggressive zoom
+bc_dynamic_fov 1
+bc_dynamic_fov_amount 80
+bc_dynamic_fov_smoothness 40
+```
+</CodeGroup>
+
+<ParamField query="bc_dynamic_fov" type="int" default="0">
+  Master toggle for Dynamic FOV. Set to `1` to allow the FOV to scale with movement speed. **Default:** `0` (disabled).
+</ParamField>
+
+<ParamField query="bc_dynamic_fov_amount" type="int" default="50">
+  Maximum FOV expansion in percent relative to the base zoom level. A value of `50` means the FOV can grow up to 50 % wider at full speed. **Range:** `0–100`. **Default:** `50`.
+</ParamField>
+
+<ParamField query="bc_dynamic_fov_smoothness" type="int" default="60">
+  Interpolation speed for FOV transitions. Lower is more responsive; higher creates a smoother, slower lens change. **Range:** `0–100`. **Default:** `60`.
+</ParamField>
+
+---
+
+## Cinematic Camera
+
+Cinematic Camera replaces the default freeview spectator movement with a smoothed interpolation that removes the instant-snap feel when panning around the map. It activates only when you are in spectator freeview and has no effect during normal gameplay.
+
+<CodeGroup>
+```cfg Enable cinematic camera
+bc_cinematic_camera 1
+```
+</CodeGroup>
+
+<ParamField query="bc_cinematic_camera" type="int" default="0">
+  Enable smooth cinematic camera movement in spectator freeview. When active, camera pans ease in and out instead of tracking the cursor directly. **Default:** `0` (disabled).
+</ParamField>
+
+<Note>
+  Cinematic Camera only applies during spectator freeview (`+spec`). It has no effect on your character camera while playing.
+</Note>
+
+---
+
+## Custom Aspect Ratio
+
+BestClient can letter-box or pillar-box the rendered game area to a fixed aspect ratio independent of your monitor resolution. This is useful for practicing on a narrower ratio, matching a stream layout, or reproducing a classic feel.
+
+### Modes
+
+<Tabs>
+  <Tab title="Mode reference">
+    | Value | Meaning |
+    |-------|---------|
+    | `-1`  | Legacy auto — automatically determines ratio from display settings (default) |
+    | `0`   | Off — native display ratio, no override |
+    | `1`   | Preset — use one of the built-in ratio presets via `bc_custom_aspect_ratio` |
+    | `2`   | Custom — set an arbitrary ratio with `bc_custom_aspect_ratio_num` / `bc_custom_aspect_ratio_den` |
+  </Tab>
+  <Tab title="Apply mode reference">
+    | Value | Meaning |
+    |-------|---------|
+    | `0`   | Game only — applies ratio to the 3D game viewport, menus use native ratio |
+    | `1`   | Full — applies ratio everywhere including menus (default) |
+    | `2`   | Game, no HUD — applies ratio to the game viewport but renders HUD at native ratio |
+  </Tab>
+</Tabs>
+
+### Built-in Presets
+
+When `bc_custom_aspect_ratio_mode 1`, set `bc_custom_aspect_ratio` to one of these values:
+
+| `bc_custom_aspect_ratio` | Ratio |
+|--------------------------|-------|
+| `125`                    | 5:4   |
+| `133`                    | 4:3   |
+| `150`                    | 3:2   |
+
+<CodeGroup>
+```cfg 4:3 preset, game only
+bc_custom_aspect_ratio_mode 1
+bc_custom_aspect_ratio_apply_mode 0
+bc_custom_aspect_ratio 133
+```
+
+```cfg Custom 16:10, full screen
+bc_custom_aspect_ratio_mode 2
+bc_custom_aspect_ratio_apply_mode 1
+bc_custom_aspect_ratio_num 16
+bc_custom_aspect_ratio_den 10
+```
+
+```cfg Off (native)
+bc_custom_aspect_ratio_mode 0
+```
+</CodeGroup>
+
+<ParamField query="bc_custom_aspect_ratio_mode" type="int" default="-1">
+  Aspect ratio mode. `-1` = legacy auto, `0` = off, `1` = use preset value, `2` = use custom numerator/denominator. **Range:** `-1–2`. **Default:** `-1`.
+</ParamField>
+
+<ParamField query="bc_custom_aspect_ratio_apply_mode" type="int" default="1">
+  Where the ratio override is applied. `0` = game viewport only, `1` = full client including menus, `2` = game viewport but HUD stays native. **Range:** `0–2`. **Default:** `1`.
+</ParamField>
+
+<ParamField query="bc_custom_aspect_ratio" type="int" default="0">
+  Preset ratio selector (used when mode is `1`). Value is the ratio × 100. For example `133` = 4:3, `125` = 5:4, `150` = 3:2. `0` = no preset selected. **Range:** `0–1000`. **Default:** `0`.
+</ParamField>
+
+<ParamField query="bc_custom_aspect_ratio_num" type="int" default="0">
+  Numerator (width component) for a custom aspect ratio. Active when `bc_custom_aspect_ratio_mode 2`. `0` = unset. **Range:** `0–100000`. **Default:** `0`.
+</ParamField>
+
+<ParamField query="bc_custom_aspect_ratio_den" type="int" default="0">
+  Denominator (height component) for a custom aspect ratio. Active when `bc_custom_aspect_ratio_mode 2`. `0` = unset. **Range:** `0–100000`. **Default:** `0`.
+</ParamField>

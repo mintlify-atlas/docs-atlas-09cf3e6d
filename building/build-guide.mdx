@@ -1,0 +1,91 @@
+---
+title: "Building BestClient from Source: Full Guide"
+sidebarTitle: "Build Guide"
+description: "Step-by-step CMake build instructions for BestClient. Covers debug and release builds, running tests, and headless test builds."
+---
+
+Once your toolchain is in place (see [Prerequisites](/building/prerequisites)), building BestClient is a matter of running a small set of CMake and Ninja commands. The project uses an out-of-source build model — all generated files land in a dedicated directory you name, keeping the source tree clean. This guide walks through cloning, the quick debug build you will use day-to-day, the CI-style build that automatically fetches GTest, running the test suite, and the headless client build used for server-side and automated testing.
+
+## Build Steps
+
+<Steps>
+  <Step title="Clone the repository and initialize submodules">
+    Clone BestClient and pull in all vendored dependencies in one go:
+
+    ```bash
+    git clone https://github.com/BestProjectTeam/BestClient.git
+    cd BestClient
+    git submodule update --init --recursive
+    ```
+
+    The recursive submodule step is mandatory — CMake will fail at configure time if bundled library paths are missing. See [Prerequisites → Git Submodules](/building/prerequisites#git-submodules) for details.
+  </Step>
+
+  <Step title="Quick debug build">
+    This is the fastest path from a clean checkout to a working binary. It skips packaging artifacts (`-DDEV=ON`) and compiles in Debug mode for shorter link times and full debug symbols:
+
+    ```bash
+    cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug -DDEV=ON
+    cmake --build build --target everything
+    ```
+
+    The `everything` target compiles the client, server, and all tools in one pass. The resulting client binary is placed inside `build/`.
+
+    <Tip>
+      Speed up compilation on multi-core machines by passing `-j$(nproc)` (Linux/macOS) or `-j%NUMBER_OF_PROCESSORS%` (Windows) to the build step:
+
+      ```bash
+      cmake --build build --target everything -j$(nproc)
+      ```
+
+      Ninja also auto-detects available cores by default, so explicit `-j` flags are usually only needed to cap or override parallelism.
+    </Tip>
+  </Step>
+
+  <Step title="CI-like build with automatic GTest download">
+    This mirrors the build used in automated pipelines. The `-DDOWNLOAD_GTEST=ON` flag tells CMake to fetch and compile GoogleTest from source if it is not already installed system-wide, enabling the full test suite without manual GTest setup:
+
+    ```bash
+    cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug -DDOWNLOAD_GTEST=ON -DDEV=ON
+    cmake --build build --target everything
+    ```
+
+    CMake will print `Automatically downloading GTest to be able to run tests` during configure if GTest was not found locally. Git must be available on your `PATH` for the download step to succeed.
+  </Step>
+
+  <Step title="Run the test suite">
+    After building with GTest available (either installed or downloaded), execute all unit tests through the `run_tests` target:
+
+    ```bash
+    cmake --build build --target run_tests
+    ```
+
+    Test output is printed directly to the terminal. A passing run exits with code 0; any failure prints the failing test name and assertion detail.
+  </Step>
+
+  <Step title="Headless test build">
+    The headless build compiles the client without any graphics subsystem (`-DHEADLESS_CLIENT=ON`). This is useful for running the full test suite in CI environments without a display server, or for verifying game logic in isolation:
+
+    ```bash
+    cmake -S . -B headless -G Ninja -DHEADLESS_CLIENT=ON -DCMAKE_BUILD_TYPE=Debug -DDOWNLOAD_GTEST=ON -DDEV=ON
+    cmake --build headless --target run_tests
+    ```
+
+    Note the separate build directory (`headless`) — this keeps the headless artifacts isolated from your regular `build/` directory so you can maintain both configurations side-by-side.
+  </Step>
+</Steps>
+
+## CMake Flags Reference
+
+| Flag | Values | Default | Description |
+|---|---|---|---|
+| `CMAKE_BUILD_TYPE` | `Debug` / `Release` / `RelWithDebInfo` / `MinSizeRel` | `Release` (or `Debug` when `DEV=ON`) | Controls optimization level, debug symbols, and NDEBUG macro. Use `Debug` during development and `Release` for distribution builds. |
+| `DEV` | `ON` / `OFF` | `OFF` | Skips packaging-oriented steps (file-prefix-map remapping, ident stripping) and defaults the build type to `Debug`. Enable for all local development builds. |
+| `DOWNLOAD_GTEST` | `ON` / `OFF` | `OFF` (Linux/macOS); `ON` (Windows) | When `ON` and GTest is not found on the system, CMake automatically clones and compiles GoogleTest via Git. Requires Git to be on `PATH`. |
+| `HEADLESS_CLIENT` | `ON` / `OFF` | `OFF` | Builds the client without a graphics backend (`CONF_HEADLESS_CLIENT` define). Disables window creation and rendering; used for headless test runs in CI. |
+
+## CMake Project Name Note
+
+<Note>
+  The CMake project is named **TClient** (`project(TClient ...)` in `CMakeLists.txt`), which is the upstream fork BestClient is built on. You will see `TClient` in CMake status output such as `******** TClient ********` during configure. This is expected — the built binary is still the full BestClient 1.9.1 beta client with all `bc_*` features intact. The project name in CMake does not affect the output binary name or any BestClient functionality.
+</Note>

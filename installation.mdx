@@ -1,0 +1,98 @@
+---
+title: "Install BestClient on Windows, Linux, or macOS"
+sidebarTitle: "Installation"
+description: "Download and install BestClient on your platform. Covers Windows installer, Linux AppImage, and macOS builds with first-run setup notes."
+---
+
+Getting BestClient running takes just a few minutes regardless of your platform. The official download page at [bestclient.fun](https://bestclient.fun) provides pre-built binaries for Windows, Linux, and macOS — no compilation required. Follow the steps below for your platform, then read the storage path section so you know exactly where your settings, screenshots, and assets will live.
+
+<Note>
+  BestClient requires an active internet connection on first launch to fetch the DDNet server list and complete initial configuration. Subsequent launches work offline.
+</Note>
+
+## Installation Steps
+
+<Steps>
+  <Step title="Download BestClient">
+    Visit [bestclient.fun](https://bestclient.fun) and download the build for your operating system. Current version: **1.9.1 beta**.
+
+    - **Windows** — `.exe` installer
+    - **Linux** — `.AppImage` bundle
+    - **macOS** — `.dmg` disk image
+  </Step>
+
+  <Step title="Install for your platform">
+    <Tabs>
+      <Tab title="Windows">
+        Run the downloaded `.exe` installer and follow the on-screen prompts. BestClient will be added to your Start Menu and optionally your Desktop. Administrator rights may be required depending on your chosen install directory.
+      </Tab>
+      <Tab title="Linux">
+        Make the AppImage executable, then run it directly — no system-level installation needed:
+
+        ```bash
+        chmod +x BestClient-1.9.1-beta.AppImage
+        ./BestClient-1.9.1-beta.AppImage
+        ```
+
+        If you see a FUSE-related error, install `libfuse2` with your package manager, or extract the AppImage with `--appimage-extract` and run the contained binary.
+      </Tab>
+      <Tab title="macOS">
+        Open the downloaded `.dmg` file, drag BestClient into your **Applications** folder, then launch it from Launchpad or Spotlight. On first open, macOS may show a Gatekeeper prompt — go to **System Settings → Privacy & Security** and allow the app to run.
+      </Tab>
+    </Tabs>
+  </Step>
+
+  <Step title="Launch BestClient">
+    Start BestClient. On the very first launch the client creates its configuration directory and downloads the DDNet server list. The location of this directory — referred to as `$USERDIR` — depends on your platform:
+
+    | Platform | Path |
+    |----------|------|
+    | Linux    | `$XDG_DATA_HOME/DDNet` (typically `~/.local/share/DDNet`) |
+    | macOS    | `~/Library/Application Support/DDNet` |
+    | Windows  | `%APPDATA%\DDNet` |
+
+    All settings, screenshots, demos, and downloaded assets are stored inside `$USERDIR`.
+  </Step>
+
+  <Step title="Complete first-run setup">
+    BestClient populates default configuration files and fetches the server list automatically. Once the main menu appears with servers visible in the browser, the setup is complete. You can now proceed to the [Quickstart](/quickstart) guide to configure your first features.
+  </Step>
+</Steps>
+
+## Storage Path System
+
+BestClient inherits DDNet's three-tier storage path model, defined in `storage.cfg`. Paths are searched from top to bottom; the first match wins. The top entry is also the **save path** — where all user data is written.
+
+```cfg
+add_path $USERDIR
+add_path $DATADIR
+add_path $CURRENTDIR
+```
+
+| Variable | Description |
+|----------|-------------|
+| `$USERDIR` | User data directory (platform-specific, see table above). **This is the save path.** Settings, screenshots, skins, and downloaded content are written here. |
+| `$DATADIR` | The `data/` directory bundled with the BestClient installation. Contains built-in skins, maps, sounds, and shaders. Read-only in normal use. |
+| `$CURRENTDIR` | The working directory at launch. Useful for portable setups or development overrides. |
+
+To use a custom layout — for example a portable install or a mod overlay — you can ship your own `storage.cfg` alongside the executable and add extra `add_path` entries before `$USERDIR`.
+
+## Platform Notes
+
+<Tabs>
+  <Tab title="Windows">
+    - The installer registers BestClient in **Add or Remove Programs**, making clean uninstalls straightforward.
+    - If you previously used DDNet or TClient, BestClient will find and reuse the existing `%APPDATA%\DDNet` directory — your skins, settings, and demos carry over automatically.
+    - Windows Defender or other antivirus tools may flag a new unsigned binary. If this happens, allow the executable and consider adding `%APPDATA%\DDNet` to your AV exclusion list to prevent scan-induced stutters during gameplay.
+  </Tab>
+  <Tab title="Linux">
+    - The AppImage is self-contained and does not require installation. You can move it freely between machines.
+    - If `$XDG_DATA_HOME` is not set, it defaults to `~/.local/share`, making the full config path `~/.local/share/DDNet`.
+    - Wayland users: BestClient supports Wayland via SDL. If you experience input or window issues, try setting `SDL_VIDEODRIVER=x11` as a workaround while Wayland support matures.
+  </Tab>
+  <Tab title="macOS">
+    - Apple Silicon (M-series) is supported. If you download a universal binary, it will select the correct architecture automatically.
+    - The config path `~/Library/Application Support/DDNet` is hidden in Finder by default. Use **Go → Go to Folder** (`⌘⇧G`) to navigate there directly.
+    - macOS may quarantine the `.dmg` on first download. Right-click the app and choose **Open** to bypass the Gatekeeper block on the first run only.
+  </Tab>
+</Tabs>

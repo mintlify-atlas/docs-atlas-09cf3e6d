@@ -1,0 +1,149 @@
+---
+title: "Input Configuration: Modes, Snap Tap, Keystrokes"
+sidebarTitle: "Input"
+description: "All bc_* config variables for BestClient's input system: Fast Input, Delta Input, Best Input, Saiko+, Snap Tap, 45 Degrees, Small Sens, and keystrokes display."
+---
+
+BestClient offers a powerful input pipeline that lets you fine-tune how mouse and keyboard actions are translated into game ticks. The modes below sit between your hardware and the DDNet prediction system, giving you options from simple fast-fire to fully interpolated input with latency compensation. All variables persist in `settings_ddnet.cfg`.
+
+---
+
+## Input Modes
+
+The core input mode is selected with `bc_fast_input_mode`. Each mode has its own tuning variables.
+
+<ParamField query="bc_fast_input_mode" type="int" default="0">
+  Active input processing mode. `0` = Fast Input (no modification), `1` = Delta Input, `3` = Best Input, `4` = Saiko+. The legacy Gamma mode is internally remapped to Best Input. Range: `0`–`4`.
+</ParamField>
+
+<ParamField query="bc_fast_input_auto_margin" type="int" default="0">
+  Automatically adjust the prediction margin in real time based on measured latency and connection stability. `0` = off, `1` = on.
+</ParamField>
+
+### Delta Input
+
+<ParamField query="bc_fast_input_delta_input" type="int" default="0">
+  Amount of delta input offset applied, in hundredths of a tick (e.g. `50` = 0.50 ticks). Range: `0`–`500`.
+</ParamField>
+
+<ParamField query="bc_delta_input_others" type="int" default="0">
+  Apply the delta input transformation to the predicted positions of other tees. `0` = off, `1` = on.
+</ParamField>
+
+### Best Input
+
+<ParamField query="bc_best_input_preset" type="int" default="0">
+  Best Input configuration preset. `0` = custom (use manual values below), `3` = auto (client chooses best parameters). Legacy values are preserved for compatibility. Range: `0`–`3`.
+</ParamField>
+
+<ParamField query="bc_best_input_offset" type="int" default="0">
+  Prediction offset applied by Best Input, in hundredths of a tick (e.g. `100` = 1.00 tick). Range: `0`–`1000`.
+</ParamField>
+
+<ParamField query="bc_best_input_smoothing" type="int" default="0">
+  Amount of temporal smoothing applied to Best Input, as a percentage. `0` = no smoothing, `100` = maximum smoothing.
+</ParamField>
+
+<ParamField query="bc_best_input_latency_comp" type="int" default="0">
+  Latency compensation factor for Best Input as a percentage. `0` = none, `50` = maximum. Range: `0`–`50`.
+</ParamField>
+
+<ParamField query="bc_best_input_interpolation" type="int" default="1">
+  Interpolation algorithm used by Best Input. `1` = linear, `2` = cubic, `3` = smooth. Range: `1`–`3`.
+</ParamField>
+
+<ParamField query="bc_best_input_others" type="int" default="0">
+  Apply Best Input prediction to the displayed positions of other tees. `0` = off, `1` = on.
+</ParamField>
+
+### Saiko+
+
+<ParamField query="bc_saiko_plus_amount" type="int" default="0">
+  Amount of Saiko+ input offset applied, in hundredths of a tick. Range: `0`–`500`.
+</ParamField>
+
+<ParamField query="bc_saiko_plus_others" type="int" default="0">
+  Apply the Saiko+ transformation to other tees' predicted positions. `0` = off, `1` = on.
+</ParamField>
+
+### Legacy Gamma Input
+
+<ParamField query="bc_fast_input_gamma_input" type="int" default="0">
+  Legacy gamma input offset in hundredths of a tick. This value is no longer active — gamma mode is internally mapped to Best Input. Range: `0`–`600`.
+</ParamField>
+
+<ParamField query="bc_gamma_input_others" type="int" default="0">
+  Legacy toggle to apply gamma input to other tees. No longer active. `0` = off, `1` = on.
+</ParamField>
+
+---
+
+## Snap Tap
+
+Snap Tap resolves conflicting left/right directional inputs by always preferring the most recently pressed key, eliminating the brief neutral state that occurs when both keys are held simultaneously.
+
+<ParamField query="bc_snap_tap" type="int" default="0">
+  Enable Snap Tap for left/right movement inputs. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_snap_tap_delay" type="int" default="0">
+  Minimum time in milliseconds to wait before switching direction when Snap Tap detects an opposite key. `0` = instant switch. Range: `0`–`200`.
+</ParamField>
+
+---
+
+## 45 Degrees
+
+The 45-degrees bind temporarily locks your aim to 45-degree angles. These variables store the previous sensitivity so it can be restored when the bind is released.
+
+<ParamField query="bc_toggle_45_degrees" type="int" default="0">
+  Use toggle mode instead of hold mode for the 45-degrees bind. `0` = hold, `1` = toggle.
+</ParamField>
+
+<ParamField query="bc_prev_mouse_max_distance_45_degrees" type="int" default="400">
+  Stores the previous `inp_max_mouse_distance` value before 45-degrees mode is activated, so it can be restored afterward. Range: `0`–`5000`.
+</ParamField>
+
+<ParamField query="bc_prev_inp_mousesens_45_degrees" type="int" default="200">
+  Stores the previous `inp_mousesens` value before 45-degrees mode is activated, so it can be restored afterward. Range: `1`–`1000000`.
+</ParamField>
+
+---
+
+## Small Sens
+
+The small-sens bind temporarily reduces mouse sensitivity for precise aiming. These variables store the previous value for restoration.
+
+<ParamField query="bc_toggle_small_sens" type="int" default="0">
+  Use toggle mode instead of hold mode for the small-sens bind. `0` = hold, `1` = toggle.
+</ParamField>
+
+<ParamField query="bc_prev_inp_mousesens_small_sens" type="int" default="200">
+  Stores the previous `inp_mousesens` value before small-sens mode is activated, so it can be restored when released. Range: `1`–`1000000`.
+</ParamField>
+
+---
+
+## Keystrokes Display
+
+BestClient can render a live keystrokes overlay showing which keys are currently pressed. Keyboard and mouse overlays are independent.
+
+### Keyboard Overlay
+
+<ParamField query="bc_keystrokes_keyboard" type="int" default="0">
+  Show a keyboard keystrokes HUD overlay. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_keystrokes_keyboard_preset" type="int" default="0">
+  Visual layout preset for the keyboard overlay. `0` = WASD minimal, `1` = WASD full, `2` = micro compact. Range: `0`–`2`.
+</ParamField>
+
+### Mouse Overlay
+
+<ParamField query="bc_keystrokes_mouse" type="int" default="0">
+  Show a mouse button keystrokes HUD overlay. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_keystrokes_mouse_preset" type="int" default="0">
+  Visual layout preset for the mouse overlay. `0` = mouse-dot, `1` = mouse-arrow, `2` = mouse-dot-dot, `3` = mouse-dot-no-box, `4` = mouse-no-movement. Range: `0`–`4`.
+</ParamField>

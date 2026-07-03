@@ -1,0 +1,77 @@
+---
+title: "BestClient Shop: Browse and Install Assets In-Client"
+sidebarTitle: "Shop"
+description: "The in-client Shop lets you browse and install game asset packs without leaving BestClient. Categories include entities, skins, emoticons, particles, HUD, and audio."
+---
+
+The BestClient Shop is a fully integrated content browser built into the client's main menu that lets you discover, preview, and install DDNet asset packs without opening a browser, downloading files manually, or restarting the client to pick up new content. Every asset in the Shop is organised into categories that map directly to DDNet's data directories, so installed items are immediately usable in the Assets Editor or in-game depending on the asset type.
+
+## Opening the Shop
+
+Select the **Shop** tab in the BestClient main menu. The Shop tab appears alongside the other BestClient navigation entries and requires no additional setup or account — browsing and installing are available as soon as BestClient loads.
+
+## Asset Categories
+
+The Shop organises its catalogue into eight categories:
+
+<CardGroup cols={2}>
+  <Card title="Entities" icon="map">
+    Replacement icon sets for DDNet map entity layers — freeze, through, jump tiles, and more.
+  </Card>
+  <Card title="Game" icon="gamepad-2">
+    Game asset replacements covering weapons, HUD elements, and in-game sprite sheets.
+  </Card>
+  <Card title="Emoticons" icon="face-smile">
+    Custom emoticon sprite sheets that replace the default tee emotion wheel.
+  </Card>
+  <Card title="Particles" icon="sparkles">
+    Particle texture packs used by DDNet's built-in and BestClient's extended particle systems.
+  </Card>
+  <Card title="HUD" icon="layout-dashboard">
+    HUD panel and icon packs that restyle the in-game interface elements.
+  </Card>
+  <Card title="Arrows" icon="arrow-up-right">
+    Directional arrow asset sets used in movement-indicator HUD modules.
+  </Card>
+  <Card title="Cursors" icon="mouse-pointer-2">
+    Custom cursor sprites for the in-game and menu mouse pointer.
+  </Card>
+  <Card title="Audio" icon="music">
+    Sound packs that replace DDNet's built-in game sounds and music tracks.
+  </Card>
+</CardGroup>
+
+## Installing Assets
+
+<Steps>
+  <Step title="Open the Shop tab">
+    Click **Shop** in the BestClient main menu sidebar.
+  </Step>
+  <Step title="Browse a category">
+    Select one of the eight category tabs to see the available packs. Each entry shows a preview thumbnail and a name.
+  </Step>
+  <Step title="Install a pack">
+    Click the **Install** button on any pack. BestClient downloads the files and places them in the correct data subdirectory automatically.
+  </Step>
+  <Step title="Apply or restart">
+    Depending on the asset type, the new content is either available immediately on the next map load or requires a full client restart. The Shop indicates which applies after installation.
+  </Step>
+</Steps>
+
+## Auto-Set Config Variable
+
+The Shop exposes one config variable that controls whether freshly downloaded assets are applied to your active preset automatically:
+
+```cfg
+bc_shop_auto_set 0
+```
+
+When `bc_shop_auto_set` is set to `1`, BestClient automatically activates each downloaded asset pack as soon as the download completes — switching your active skin, entity set, or emoticon sheet without any extra clicks. When set to `0` (default), the asset is installed to disk but your current selection is unchanged; you choose when to apply it through the in-game settings or the Assets Editor.
+
+<Note>
+  Installed assets are placed in the appropriate DDNet data subdirectory (`skins/`, `mapres/`, `assets/`, etc.) and are available to all DDNet-compatible clients on the same machine. Assets that apply at the rendering level (entities, particles, HUD) take effect on the next map load; skin changes apply immediately through the skin selector.
+</Note>
+
+## Integration with the Assets Editor
+
+Shop-installed assets appear automatically in the Assets Editor's category browsers on the next editor open. This allows you to download several packs from the Shop and then use the Assets Editor to mix elements from different packs into a single custom export without leaving the client.
