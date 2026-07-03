@@ -1,7 +1,7 @@
 ---
-title: "Visuals Configuration: Camera, Particles, Effects"
+title: "BestClient Visuals Config: Particles, Camera, Effects"
 sidebarTitle: "Visuals"
-description: "All bc_* config variables controlling BestClient's visual features: camera effects, particle systems, tee effects, aspect ratio, and ReShade integration."
+description: "All bc_* config variables controlling BestClient's visual features: camera, particle systems, tee effects, aspect ratio, music player, and optimizer."
 ---
 
 BestClient ships with a rich set of visual enhancements — from subtle UI animations and eye-comfort overlays to full particle systems and tee deformation effects. Every option listed here can be changed live from the in-game console or configured through the BestClient settings UI. All variables are persisted to `settings_ddnet.cfg` in your `$USERDIR`.
@@ -46,7 +46,7 @@ Control the custom aspect ratio feature that lets you render at a non-native rat
 
 ### 3D Particles
 
-<Accordion title="3D Particle variables (18 variables)">
+<Accordion title="3D Particle variables (19 variables)">
 
 <ParamField query="bc_3d_particles" type="int" default="0">
   Toggle the 3D particle system. `0` = off, `1` = on.
@@ -105,7 +105,7 @@ Control the custom aspect ratio feature that lets you render at a non-native rat
 </ParamField>
 
 <ParamField query="bc_3d_particles_color_mode" type="int" default="1">
-  Color mode for 3D particles. `1` = custom static color, `2` = random per-particle color.
+  Color mode for 3D particles. `1` = custom static color, `2` = random per-particle color. Range: `1`–`2`.
 </ParamField>
 
 <ParamField query="bc_3d_particles_color" type="color" default="4294967295">
@@ -214,6 +214,222 @@ Control the custom aspect ratio feature that lets you render at a non-native rat
 
 <ParamField query="bc_game_media_background_offset" type="int" default="0">
   Controls how much the in-game background is anchored to the map versus the screen. `0` = fully screen-fixed, `100` = fully map-fixed. Range: `0`–`100`.
+</ParamField>
+
+---
+
+## Music Player
+
+The built-in music player renders a configurable HUD overlay with optional cover art, a spectrum visualizer, and album-based color theming.
+
+<Accordion title="Music Player variables (20 variables)">
+
+<ParamField query="bc_music_player" type="int" default="1">
+  Enable the Music Player HUD element. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_music_player_show_when_paused" type="int" default="1">
+  Keep the Music Player visible while playback is paused. `0` = hide when paused, `1` = always show.
+</ParamField>
+
+<ParamField query="bc_music_player_visualizer" type="int" default="1">
+  Enable the spectrum visualizer in the music player. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_music_player_visualizer_mode" type="int" default="1">
+  Visualizer bar anchor. `0` = bottom, `1` = center, `2` = up. Range: `0`–`2`.
+</ParamField>
+
+<ParamField query="bc_music_player_visualizer_sensitivity" type="int" default="300">
+  Visualizer sensitivity in percent — higher values respond to quieter audio. Range: `50`–`300`.
+</ParamField>
+
+<ParamField query="bc_music_player_visualizer_smoothing" type="int" default="50">
+  Visualizer bar smoothing amount. Range: `0`–`100`.
+</ParamField>
+
+<ParamField query="bc_music_player_visualizer_rounding" type="int" default="0">
+  Visualizer bar corner rounding in percent. Range: `0`–`400`.
+</ParamField>
+
+<ParamField query="bc_music_player_visualizer_columns" type="int" default="5">
+  Number of visualizer bars. Range: `5`–`10`.
+</ParamField>
+
+<ParamField query="bc_music_player_visualizer_column_width" type="int" default="100">
+  Width of each visualizer bar in percent. Range: `50`–`250`.
+</ParamField>
+
+<ParamField query="bc_music_player_visualizer_gap" type="int" default="100">
+  Gap between visualizer bars in percent. Range: `0`–`250`.
+</ParamField>
+
+<ParamField query="bc_music_player_color_mode" type="int" default="3">
+  Color mode for the music player. `0` = static color, `1` = cover accent color, `2` = dominant cover color, `3` = translucent. Range: `0`–`3`.
+</ParamField>
+
+<ParamField query="bc_music_player_static_color" type="color" default="128">
+  Static color used when `bc_music_player_color_mode` is `0`.
+</ParamField>
+
+<ParamField query="bc_music_player_size_mode" type="int" default="1">
+  Player size. `0` = normal, `1` = mini. Range: `0`–`1`.
+</ParamField>
+
+<ParamField query="bc_music_player_text_scale" type="int" default="100">
+  Text scale in percent. Range: `70`–`150`.
+</ParamField>
+
+<ParamField query="bc_music_player_animation_ms" type="int" default="180">
+  Music player animation duration in milliseconds. Range: `50`–`1000`.
+</ParamField>
+
+<ParamField query="bc_music_player_show_cover" type="int" default="1">
+  Show cover art in the music player. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_music_player_use_color_for_hud" type="int" default="0">
+  Use the Music Player's current color for HUD rectangle rendering. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_music_player_hud_color_alpha" type="int" default="100">
+  Alpha multiplier for the Music Player and HUD colors in percent. Range: `0`–`100`.
+</ParamField>
+
+</Accordion>
+
+---
+
+## Optimizer
+
+The Optimizer reduces GPU/CPU load with configurable culling and process priority adjustments.
+
+<Accordion title="Optimizer variables (10 variables)">
+
+<ParamField query="bc_optimizer" type="int" default="0">
+  Enable optimizer features. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_optimizer_disable_particles" type="int" default="0">
+  Disable rendering and updating all particles. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_optimizer_fps_fog" type="int" default="0">
+  Cull non-map rendering outside a distance limit around the camera. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_optimizer_ddnet_priority_high" type="int" default="0">
+  Set the DDNet process priority to High while the optimizer is enabled. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_optimizer_discord_priority_below_normal" type="int" default="0">
+  Set the Discord process priority to Below Normal while the optimizer is enabled. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_optimizer_fps_fog_mode" type="int" default="0">
+  FPS fog culling mode. `0` = manual radius in tiles, `1` = by zoom percent. Range: `0`–`1`.
+</ParamField>
+
+<ParamField query="bc_optimizer_fps_fog_radius_tiles" type="int" default="40">
+  Manual FPS fog radius in tiles (1 tile = 32 units). Used when `bc_optimizer_fps_fog_mode` is `0`. Range: `5`–`300`.
+</ParamField>
+
+<ParamField query="bc_optimizer_fps_fog_zoom_percent" type="int" default="70">
+  Visible area percentage in zoom mode. Used when `bc_optimizer_fps_fog_mode` is `1`. Range: `10`–`120`.
+</ParamField>
+
+<ParamField query="bc_optimizer_fps_fog_render_rect" type="int" default="0">
+  Render an outline rectangle showing the active FPS fog area. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_optimizer_fps_fog_cull_map_tiles" type="int" default="0">
+  Also cull map tile rendering outside the FPS fog area. `0` = off, `1` = on.
+</ParamField>
+
+</Accordion>
+
+---
+
+## Focus Mode
+
+Focus Mode hides selected UI elements to minimize distractions during gameplay.
+
+<ParamField query="p_focus_mode" type="int" default="0">
+  Enable focus mode. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="p_focus_mode_hide_names" type="int" default="0">
+  Hide all player names while focus mode is active. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="p_focus_mode_hide_effects" type="int" default="0">
+  Hide visual effects while focus mode is active. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="p_focus_mode_hide_hud" type="int" default="0">
+  Hide the HUD while focus mode is active. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="p_focus_mode_hide_song_player" type="int" default="0">
+  Hide the song/music player while focus mode is active. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="p_focus_mode_hide_ui" type="int" default="0">
+  Hide unnecessary UI elements while focus mode is active. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="p_focus_mode_hide_chat" type="int" default="0">
+  Hide the chat panel while focus mode is active. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="p_focus_mode_hide_scoreboard" type="int" default="0">
+  Hide the scoreboard while focus mode is active. `0` = off, `1` = on.
+</ParamField>
+
+---
+
+## Effects
+
+Toggle individual visual and audio effects triggered by game events.
+
+<ParamField query="p_effect_freeze_snowflakes" type="int" default="1">
+  Enable the snowflakes freeze effect. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="p_effect_hammerhit" type="int" default="1">
+  Enable the hammer hit visual effect. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="p_effect_sound_hammerhit" type="int" default="1">
+  Enable the hammer hit sound effect. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="p_effect_jump" type="int" default="1">
+  Enable the jump visual effect. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="p_effect_sound_jump" type="int" default="1">
+  Enable the jump sound effect. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_mute_others_hook" type="int" default="0">
+  Mute hook sounds produced by other players. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_mute_others_hammer" type="int" default="0">
+  Mute hammer sounds produced by other players. `0` = off, `1` = on.
+</ParamField>
+
+---
+
+## Gores Mode
+
+<ParamField query="bc_gores_mode" type="int" default="0">
+  Enable entity-like Gores mode rendering. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_gores_mode_disable_weapons" type="int" default="1">
+  Automatically disable Gores mode when you are holding the shotgun, grenade launcher, or laser rifle. `0` = off, `1` = on.
 </ParamField>
 
 ---

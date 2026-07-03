@@ -16,7 +16,7 @@ This guide walks you through everything you need to go from a fresh BestClient i
     2. In the filter bar, type `DDNet` or select the **DDNet** network from the network dropdown.
     3. Double-click any server in the list to connect.
 
-    BestClient uses a BestClient master server mirror (`bc_mastersrv`) alongside the standard DDNet master servers, so the browser may show a slightly richer server list than vanilla DDNet.
+    BestClient can use a BestClient master server mirror alongside the standard DDNet master servers — enable it with `bc_mastersrv 1` in the console (`F1`) so the browser may show a slightly richer server list than vanilla DDNet.
   </Step>
 
   <Step title="Open BestClient settings">
@@ -29,41 +29,41 @@ This guide walks you through everything you need to go from a fresh BestClient i
   </Step>
 
   <Step title="Enable a visual effect">
-    Camera Drift is one of the most immediately noticeable BestClient visual features — it adds a subtle momentum-based camera offset as you move, giving gameplay a more cinematic feel.
+    Eye Comfort is one of the easiest BestClient visual features to try immediately — it applies a warm overlay to reduce eye strain during long sessions.
 
-    In **Settings → BestClient → Visuals**, toggle **Camera Drift** on, or run the command directly in the console (`F1`):
+    In **Settings → BestClient → Visuals**, toggle **Eye Comfort** on, or run the command directly in the console (`F1`):
 
     ```cfg
-    bc_camera_drift 1
-    bc_camera_drift_amount 300
+    bc_eye_comfort 1
+    bc_eye_comfort_strength 35
     ```
 
-    Adjust `bc_camera_drift_amount` (default `300`) to taste — higher values produce a more pronounced drift. `bc_camera_drift_smoothness` controls how quickly the offset catches up to your movement.
+    Adjust `bc_eye_comfort_strength` (default `35`, range 0–100) to taste — higher values produce a warmer, dimmer overlay.
 
     Other visual effects worth exploring right away:
 
     | Feature | Console command | What it does |
     |---------|----------------|--------------|
-    | Dynamic FOV | `bc_dynamic_fov 1` | Widens the field of view proportionally as you move faster |
-    | Afterimage | `bc_afterimage 1` | Leaves a fading ghost trail behind your tee |
-    | Eye Comfort | `bc_eye_comfort 1` | Applies a subtle brightness/contrast filter to reduce eye strain |
-    | Motion Blur | `bc_motion_blur 1` | Adds directional blur to fast-moving objects |
+    | Cinematic Camera | `bc_cinematic_camera 1` | Smooth cinematic camera movement in spectator freeview |
+    | Player Trail | `bc_trail 1` | Leaves a fading ghost trail behind your tee |
+    | Motion Blur | `bc_motion_blur 1` | Adds directional blur via previous-frame blending |
+    | Crystal Laser | `bc_crystal_laser 1` | Renders rifle and shotgun lasers with crystal shards and icy glow |
   </Step>
 
   <Step title="Configure your input mode">
-    BestClient offers four extended input modes on top of standard DDNet input. Open **Settings → BestClient → Input** to choose one:
+    BestClient offers four extended input modes on top of standard DDNet input, all controlled through a single `bc_fast_input_mode` setting. Open **Settings → BestClient → Input** to choose one:
 
     | Mode | Config value | Description |
     |------|-------------|-------------|
-    | **Fast Input** | `bc_fast_input_mode 1–4` | Reduces input pipeline latency by polling and applying inputs earlier in the frame |
-    | **Delta Input** | `bc_fast_input_delta_input 1` | Uses delta-based mouse accumulation for smoother aim at low framerates |
-    | **Best Input** | `bc_best_input_preset <n>` | Opinionated preset combining latency compensation, smoothing, and interpolation |
-    | **Saiko+** | `bc_saiko_plus_amount <n>` | Fine-grained mouse sensitivity amplification used by top players |
+    | **Fast Input** | `bc_fast_input_mode 0` | Default mode — reduces input pipeline latency by polling and applying inputs earlier in the frame |
+    | **Delta Input** | `bc_fast_input_mode 1` | Uses delta-based mouse accumulation; fine-tune the amount with `bc_fast_input_delta_input` |
+    | **Best Input** | `bc_fast_input_mode 3` | Opinionated preset combining latency compensation, smoothing, and interpolation; configure with `bc_best_input_preset` |
+    | **Saiko+** | `bc_fast_input_mode 4` | Fine-grained mouse sensitivity amplification used by top players; tune with `bc_saiko_plus_amount` |
 
-    A common competitive starting point:
+    A common competitive starting point that enables Fast Input mode:
 
     ```cfg
-    bc_fast_input_mode 3
+    bc_fast_input_mode 0
     ```
 
     You can also enable **Snap Tap** (`bc_snap_tap 1`) for keyboard direction conflict resolution, and **45 Degrees** (`bc_toggle_45_degrees 1`) to lock aim to 45° increments on demand.
@@ -91,10 +91,10 @@ This guide walks you through everything you need to go from a fresh BestClient i
     ```cfg
     bc_hud_music_player_x 120
     bc_hud_music_player_y 40
-    bc_hud_music_player_scale 1
+    bc_hud_music_player_scale 100
     ```
 
-    Drag the widget to your preferred corner, release, and the values update automatically.
+    Drag the widget to your preferred corner, release, and the values update automatically. The scale is expressed as a percentage (25–300), where 100 is normal size.
   </Step>
 </Steps>
 
@@ -102,13 +102,13 @@ This guide walks you through everything you need to go from a fresh BestClient i
 
 All `bc_*` settings are saved automatically to `settings_ddnet.cfg` inside your `$USERDIR` whenever you close the client or apply changes in the settings panel. You can also edit this file directly in any text editor.
 
-A minimal starter config that covers the most popular BestClient tweaks:
+A minimal starter config that covers some of the most popular BestClient tweaks:
 
 ```cfg
-bc_camera_drift 1
-bc_camera_drift_amount 300
-bc_dynamic_fov 1
-bc_fast_input_mode 3
+bc_eye_comfort 1
+bc_eye_comfort_strength 35
+bc_cinematic_camera 1
+bc_fast_input_mode 0
 ```
 
 <Tip>
@@ -118,8 +118,8 @@ bc_fast_input_mode 3
 ## What to Explore Next
 
 <CardGroup cols={2}>
-  <Card title="Features" icon="star" href="/features">
-    Deep-dive into every BestClient feature: visuals, input modes, social systems, editors, the Shop, and the Fun tab mini-games.
+  <Card title="Visuals" icon="eye" href="/features/visuals/camera-and-fov">
+    Deep-dive into BestClient visual features: camera effects, FOV controls, particle systems, tee effects, and UI animations.
   </Card>
   <Card title="Configuration Reference" icon="sliders" href="/config/overview">
     The complete reference for all 280 `bc_*` config variables — values, ranges, defaults, and usage notes.

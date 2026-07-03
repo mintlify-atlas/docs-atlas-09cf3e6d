@@ -1,7 +1,7 @@
 ---
 title: "Building BestClient from Source: Full Guide"
 sidebarTitle: "Build Guide"
-description: "Step-by-step CMake build instructions for BestClient. Covers debug and release builds, running tests, and headless test builds."
+description: "Step-by-step CMake build instructions for BestClient 1.9.1 beta. Covers debug and release builds, running tests, and headless CI test builds."
 ---
 
 Once your toolchain is in place (see [Prerequisites](/building/prerequisites)), building BestClient is a matter of running a small set of CMake and Ninja commands. The project uses an out-of-source build model — all generated files land in a dedicated directory you name, keeping the source tree clean. This guide walks through cloning, the quick debug build you will use day-to-day, the CI-style build that automatically fetches GTest, running the test suite, and the headless client build used for server-side and automated testing.

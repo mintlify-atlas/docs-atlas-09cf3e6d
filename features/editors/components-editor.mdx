@@ -1,5 +1,5 @@
 ---
-title: "Components Editor: Toggle 52 BestClient Modules"
+title: "Components Editor: Control All 52 BestClient Modules"
 sidebarTitle: "Components Editor"
 description: "The Components Editor is a fullscreen toggle panel for all BestClient and TClient modules. Changes are staged before apply and prompt a client restart."
 ---
@@ -30,13 +30,19 @@ Visual modules control rendering effects that appear during gameplay and in menu
 
 | Module | Description |
 |---|---|
-| Camera Drift | Adds a subtle sway to the camera as you move |
-| Jelly Tee | Physics-based tee body deformation on movement |
-| Magic Particles | Ambient particle emitter around your character |
-| Dynamic FOV | Scales the field of view with movement speed |
-| Afterimage | Leaves fading ghost frames behind your tee |
 | Music Player | In-game music player HUD widget |
 | Media Background | Custom video or image background for menus and in-game |
+| Optimizer | FPS optimisation including particle culling and FPS fog |
+| Animations | BestClient UI, chat, killfeed, and menu animations |
+| Crystal Laser | Rifle and shotgun lasers rendered with crystal shards and icy glow |
+| Focus Mode | Minimises visual distractions by hiding names, effects, HUD, and chat |
+| 3D Particles | Floating 3D cube or heart particles around your character |
+| Custom Aspect Ratio | Letterbox or stretch the rendered game area to a custom aspect ratio |
+| Jelly Tee | Physics-based tee body deformation on movement |
+| Player Trail | Grenade, invisible, or ninja trail effect behind your tee |
+| Motion Blur | Previous-frame blending motion blur |
+| Flying Name Plates | Name plates rendered like kites trailing behind players |
+| Keystrokes | On-screen keyboard and mouse keystroke HUD displays |
 | Eye Comfort | Warm overlay to reduce eye strain during long sessions |
 
 ### Gameplay
@@ -47,7 +53,11 @@ Gameplay modules affect input timing, movement decisions, and race tools.
 |---|---|
 | Input | Fast input, delta input, best input, Saiko+, and related input systems |
 | Fast Actions | Quick-use action shortcuts for competitive play |
+| Speedrun Timer | Configurable countdown speedrun timer HUD |
 | Finish Prediction | Progress bar and time estimate toward map completion |
+| Auto Team Lock | Automatically lock your team after joining it |
+| Gores Mode | Entity-like gores mode for visual clarity |
+| Hook Combo | Hook combo popup with combo sounds |
 
 ### Others
 
@@ -55,9 +65,12 @@ Social and utility modules that operate outside of pure rendering or input.
 
 | Module | Description |
 |---|---|
+| Client Indicator | UDP presence indicator showing other BestClient users |
 | Voice Chat | Integrated in-client voice communication system |
 | Voice Binds | Push-to-talk and voice command key bindings |
 | Chat Media | Inline image and GIF preview inside the chat window |
+| Streamer Mode | Hides sensitive information for streaming and recording |
+| Misc | Miscellaneous utility helpers |
 
 ### TClient
 
@@ -99,21 +112,25 @@ bc_disabled_components_mask_lo 0
 bc_disabled_components_mask_hi 0
 ```
 
-Each bit position maps to one `EBestClientComponent` enum value defined in `bestclient.h`. When a bit is **set**, that component is **disabled**. Both values default to `0`, meaning all components are enabled. The split into `_lo` and `_hi` exists because DDNet config integers are capped at `2147483647` (a signed 32-bit max), so each half covers components `0–30` and `31–56` respectively.
+Each bit position maps to one `EBestClientComponent` enum value defined in `bestclient.h`. When a bit is **set**, that component is **disabled**. Both values default to `0`, meaning all components are enabled. The split into `_lo` and `_hi` exists because DDNet config integers are capped at `2147483647` (a signed 32-bit max), so each half covers components `0–30` and `31–54` respectively.
 
 The editor always writes both values atomically when you press **Apply**, so there is no risk of a partial save leaving the mask in a half-updated state.
 
 ## Full Component Reference
 
-The 57 registered `EBestClientComponent` slots (from `bestclient.h`) in order are:
+The 55 registered `EBestClientComponent` slots (from `bestclient.h`) in order are:
 
 ```
 COMPONENT_VISUALS_MUSIC_PLAYER
+COMPONENT_VISUALS_LEGACY_RESERVED_2
+COMPONENT_VISUALS_LEGACY_RESERVED_1
 COMPONENT_VISUALS_MEDIA_BACKGROUND
 COMPONENT_VISUALS_OPTIMIZER
 COMPONENT_VISUALS_ANIMATIONS
+COMPONENT_VISUALS_LEGACY_RESERVED_3
 COMPONENT_VISUALS_CRYSTAL_LASER
 COMPONENT_VISUALS_FOCUS_MODE
+COMPONENT_VISUALS_LEGACY_RESERVED_4
 COMPONENT_VISUALS_3D_PARTICLES
 COMPONENT_VISUALS_ASPECT_RATIO
 COMPONENT_GAMEPLAY_INPUT
@@ -124,7 +141,30 @@ COMPONENT_GAMEPLAY_AUTO_TEAM_LOCK
 COMPONENT_GAMEPLAY_GORES_MODE
 COMPONENT_GAMEPLAY_HOOK_COMBO
 COMPONENT_OTHERS_CLIENT_INDICATOR
-COMPONENT_TCLIENT_SETTINGS_TAB … COMPONENT_TCLIENT_SETTINGS_FINISH_NAME
+COMPONENT_TCLIENT_SETTINGS_TAB
+COMPONENT_TCLIENT_BIND_WHEEL_TAB
+COMPONENT_TCLIENT_WAR_LIST_TAB
+COMPONENT_TCLIENT_CHAT_BINDS_TAB
+COMPONENT_TCLIENT_STATUS_BAR_TAB
+COMPONENT_TCLIENT_INFO_TAB
+COMPONENT_TCLIENT_PROFILES_PAGE
+COMPONENT_TCLIENT_CONFIGS_PAGE
+COMPONENT_TCLIENT_SETTINGS_VISUAL
+COMPONENT_TCLIENT_SETTINGS_ANTI_LATENCY
+COMPONENT_TCLIENT_SETTINGS_ANTI_PING_SMOOTHING
+COMPONENT_TCLIENT_SETTINGS_AUTO_EXECUTE
+COMPONENT_TCLIENT_SETTINGS_VOTING
+COMPONENT_TCLIENT_SETTINGS_AUTO_REPLY
+COMPONENT_TCLIENT_SETTINGS_PLAYER_INDICATOR
+COMPONENT_TCLIENT_SETTINGS_PET
+COMPONENT_TCLIENT_SETTINGS_HUD
+COMPONENT_TCLIENT_SETTINGS_FROZEN_TEE_DISPLAY
+COMPONENT_TCLIENT_SETTINGS_TILE_OUTLINES
+COMPONENT_TCLIENT_SETTINGS_GHOST_TOOLS
+COMPONENT_TCLIENT_SETTINGS_RAINBOW
+COMPONENT_TCLIENT_SETTINGS_TEE_TRAILS
+COMPONENT_TCLIENT_SETTINGS_BACKGROUND_DRAW
+COMPONENT_TCLIENT_SETTINGS_FINISH_NAME
 COMPONENT_OTHERS_MISC
 COMPONENT_OTHERS_CHAT_MEDIA
 COMPONENT_OTHERS_VOICE_SETTINGS
@@ -136,6 +176,7 @@ COMPONENT_VISUALS_MOTION_BLUR
 COMPONENT_VISUALS_FLYING_NAMEPLATES
 COMPONENT_VISUALS_KEYSTROKES
 COMPONENT_VISUALS_EYE_COMFORT
+NUM_COMPONENTS_EDITOR_COMPONENTS
 ```
 
 Legacy reserved slots (`COMPONENT_VISUALS_LEGACY_RESERVED_1/2/3/4`) occupy fixed bit positions but render no toggle in the UI; their bits are always preserved as-is to avoid shifting the mask of existing configs.

@@ -1,7 +1,7 @@
 ---
 title: "Social and Utility Config: Chat, Browser, Streaming"
 sidebarTitle: "Social & Utility"
-description: "Configuration variables for BestClient's social and utility features: Chat Media, Client Indicator, server browser options, streamer flags, and admin panel."
+description: "Configuration variables for BestClient's social features: Chat Media, Client Indicator, server browser, streamer flags, and admin panel."
 ---
 
 This page documents all `bc_*` configuration variables related to BestClient's social systems and utility tooling — inline media previews in chat, the Client Indicator presence system, server browser enhancements, streamer mode privacy options, the admin panel, and several smaller convenience features. All variables are saved to `settings_ddnet.cfg` unless noted otherwise.
@@ -90,6 +90,10 @@ The Client Indicator system broadcasts your presence to a lightweight UDP server
   Allow the indicator icon to reposition dynamically in name plates based on other nameplate content. `0` = fixed, `1` = dynamic.
 </ParamField>
 
+<ParamField query="indicator_version" type="int" default="0">
+  Show the BestClient version string in player name plates. `0` = off, `1` = on.
+</ParamField>
+
 <ParamField query="bc_client_indicator_in_scoreboard" type="int" default="1">
   Show the BestClient indicator icon in the scoreboard next to each player's name. `0` = off, `1` = on.
 </ParamField>
@@ -146,6 +150,10 @@ The Client Indicator system broadcasts your presence to a lightweight UDP server
   Display an abbreviated name for KoG Gores servers in the browser list. `0` = full name, `1` = short name.
 </ParamField>
 
+<ParamField query="br_filter_bestclient" type="int" default="0">
+  Filter out servers with no BestClient users from the server browser. `0` = off, `1` = on.
+</ParamField>
+
 ---
 
 ## Streamer Mode
@@ -170,7 +178,7 @@ Streamer mode hides sensitive information from your screen using a bitmask store
 
 ## Admin Panel
 
-<Accordion title="Admin panel variables (14 variables)">
+<Accordion title="Admin panel variables (15 variables)">
 
 <ParamField query="bc_adminpanel_autoscroll" type="int" default="1">
   Automatically scroll to the bottom of log output in the admin panel. `0` = off, `1` = on.
@@ -194,6 +202,10 @@ Streamer mode hides sensitive information from your screen using a bitmask store
 
 <ParamField query="bc_adminpanel_log_lines" type="int" default="200">
   Maximum number of log lines to retain in the admin panel log view. Older lines are discarded when the limit is reached. Range: `50`–`500`.
+</ParamField>
+
+<ParamField query="bc_adminpanel_rcon_log" type="int" default="0">
+  Log F2 console (rcon) output to `rcon-log.txt` in the DDNet appdata directory. `0` = off, `1` = on.
 </ParamField>
 
 <ParamField query="bc_adminpanel_bg_color" type="color" default="0x8C000000">
@@ -281,4 +293,32 @@ Advanced: these two integers form a 62-bit bitmask that disables specific BestCl
 
 <ParamField query="bc_bestclient_settings_tabs" type="int" default="0">
   Bit flags controlling which BestClient settings tabs are hidden from the UI. `0` = all tabs visible. Range: `0`–`65536`.
+</ParamField>
+
+---
+
+## Casino
+
+The built-in casino mini-game tracks your balance and claim cooldown locally.
+
+<ParamField query="bc_casino_balance" type="int" default="500">
+  Casino game balance in dollars. Range: `0`–`9999999`.
+</ParamField>
+
+<ParamField query="bc_casino_last_claim" type="int" default="0">
+  Unix timestamp of the last casino free-claim action. Range: `0`–`2147483647`.
+</ParamField>
+
+---
+
+## Debug
+
+These variables enable verbose logging for specific BestClient subsystems. They are intended for developers and bug reports.
+
+<ParamField query="dbg_client_indicator" type="int" default="0">
+  Debug logging level for the Client Indicator subsystem. `0` = off, `1` = verbose, `2` = dump all UDP packet bytes sent and received. Range: `0`–`2`.
+</ParamField>
+
+<ParamField query="dbg_music_player" type="int" default="0">
+  Debug logging level for the music player. `0` = off, `1` = state changes, `2` = verbose periodic diagnostics. Range: `0`–`2`.
 </ParamField>

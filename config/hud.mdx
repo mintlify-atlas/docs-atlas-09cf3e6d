@@ -1,5 +1,5 @@
 ---
-title: "HUD Configuration: Module Positions and Scale"
+title: "BestClient HUD Config: Positions, Scale, and Timers"
 sidebarTitle: "HUD Config"
 description: "All bc_hud_* config variables controlling the position and scale of BestClient HUD modules: music player, voice, mute icons, chat, and votes."
 ---
@@ -126,6 +126,108 @@ The dummy coordinate indicator draws a marker on your HUD showing the relative v
 
 <ParamField query="bc_showhud_dummy_coord_indicator_same_height_color" type="color" default="5635967">
   ARGB color of the indicator when the tracked player is aligned at the same vertical position as you.
+</ParamField>
+
+---
+
+## Speedrun Timer
+
+The speedrun timer displays a countdown on screen and can be configured to auto-disable when it reaches zero.
+
+<ParamField query="bc_speedrun_timer" type="int" default="0">
+  Enable the speedrun timer HUD element. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_speedrun_timer_time" type="int" default="0">
+  Speedrun timer time stored in MMSS format. Range: `0`–`9999`.
+</ParamField>
+
+<ParamField query="bc_speedrun_timer_hours" type="int" default="0">
+  Speedrun timer hours component. Range: `0`–`99`.
+</ParamField>
+
+<ParamField query="bc_speedrun_timer_minutes" type="int" default="0">
+  Speedrun timer minutes component. Range: `0`–`59`.
+</ParamField>
+
+<ParamField query="bc_speedrun_timer_seconds" type="int" default="0">
+  Speedrun timer seconds component. Range: `0`–`59`.
+</ParamField>
+
+<ParamField query="bc_speedrun_timer_milliseconds" type="int" default="0">
+  Speedrun timer milliseconds component. Range: `0`–`999`.
+</ParamField>
+
+<ParamField query="bc_speedrun_timer_auto_disable" type="int" default="0">
+  Automatically disable the speedrun timer when it reaches zero. `0` = off, `1` = on.
+</ParamField>
+
+---
+
+## Finish Prediction
+
+Finish prediction estimates your remaining time or predicted finish time based on current race progress.
+
+<ParamField query="bc_finish_prediction" type="int" default="0">
+  Enable the finish prediction HUD element. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_finish_prediction_mode" type="int" default="0">
+  Display mode. `0` = classic text, `1` = progress bar.
+</ParamField>
+
+<ParamField query="bc_finish_prediction_show_always" type="int" default="1">
+  Show finish prediction even before the race has started. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_finish_prediction_time_mode" type="int" default="0">
+  Time display mode. `0` = remaining time, `1` = predicted finish time.
+</ParamField>
+
+<ParamField query="bc_finish_prediction_show_time" type="int" default="1">
+  Show the finish prediction time value. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_finish_prediction_show_percentage" type="int" default="1">
+  Show the finish prediction progress percentage. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_finish_prediction_show_millis" type="int" default="1">
+  Show milliseconds in the finish prediction time. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_finish_prediction_bar_custom_color" type="int" default="0">
+  Use a custom color for the finish prediction progress bar. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_finish_prediction_bar_color" type="color" default="0xFFFFFFFF">
+  ARGB color of the finish prediction progress bar when custom color is enabled. Supports alpha.
+</ParamField>
+
+---
+
+## Hook Combo
+
+The hook combo system shows a popup counter and plays sounds when you chain successive hooks on the same player.
+
+<ParamField query="bc_hook_combo" type="int" default="0">
+  Show hook combo popups and play combo sounds. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_hook_combo_mode" type="int" default="0">
+  Combo trigger mode. `0` = hook only, `1` = hammer only, `2` = hook and hammer. Range: `0`–`2`.
+</ParamField>
+
+<ParamField query="bc_hook_combo_reset_time" type="int" default="1200">
+  Maximum time in milliseconds between player hooks before the combo counter resets. Range: `100`–`5000`.
+</ParamField>
+
+<ParamField query="bc_hook_combo_sound_volume" type="int" default="100">
+  Volume of hook combo sound effects in percent. Range: `0`–`100`.
+</ParamField>
+
+<ParamField query="bc_hook_combo_size" type="int" default="100">
+  Size of the hook combo popup overlay in percent. Range: `50`–`200`.
 </ParamField>
 
 ---

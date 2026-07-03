@@ -1,5 +1,5 @@
 ---
-title: "BestClient Configuration Reference Overview"
+title: "BestClient Configuration Variables: Quick Reference"
 sidebarTitle: "Overview"
 description: "All BestClient settings use the bc_* prefix and are saved to settings_ddnet.cfg. This reference covers types, defaults, value ranges, and file locations."
 ---
@@ -15,8 +15,8 @@ Every `bc_*` variable is stored in `settings_ddnet.cfg` inside your `$USERDIR`. 
 Open the in-game console with **F1** (or the key bound to `toggle_local_console`) and type the variable name followed by its value:
 
 ```cfg
-bc_camera_drift 1
-bc_camera_drift_amount 300
+bc_voice_chat_volume 150
+bc_3d_particles 1
 ```
 
 To make a change permanent without using the UI, add the same lines to `settings_ddnet.cfg` and save the file before launching the client.
@@ -53,8 +53,8 @@ Paths are searched top-down — `$USERDIR` has the highest priority and is also 
 
 Use the links below to jump to a specific category of `bc_*` variables:
 
-- **[Visuals](/config/visuals)** — Camera, particles, tee effects, ReShade, media backgrounds, UI visuals, and animations
+- **[Visuals](/config/visuals)** — Camera, particles, tee effects, media backgrounds, music player, optimizer, focus mode, and animations
 - **[Input](/config/input)** — Fast Input, Delta Input, Best Input, Saiko+, Snap Tap, 45 Degrees, Small Sens, and keystrokes display
 - **[Voice Chat](/config/voice-chat)** — Activation, VAD, audio devices, proximity radius, mute lists, and UI
-- **[HUD](/config/hud)** — Module positions and scale for the music player, voice, mute icons, chat, and votes panels
+- **[HUD](/config/hud)** — Module positions, scale, speedrun timer, finish prediction, and HUD visibility
 - **[Social & Utility](/config/social-utility)** — Chat Media, Client Indicator, server browser, streamer mode, admin panel, and more

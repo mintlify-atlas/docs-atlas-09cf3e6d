@@ -6,9 +6,13 @@ description: "BestClient includes built-in voice chat with voice activity detect
 
 BestClient ships a fully integrated voice chat system built on the Opus audio codec. Rather than relying on an external application, voice is routed through a BestClient-operated relay server — the connection address is resolved automatically via the `bc_voice_chat_server_address` setting. Once connected, players are placed into a room tied to their current game server and team, enabling hands-free coordination without ever leaving the client.
 
-<Note>
-  The default value for `bc_voice_chat_server_address` is `"managed"`, which tells BestClient to resolve the relay endpoint from BestClient-run infrastructure automatically. You only need to change this if you are self-hosting a compatible voice relay or were given an alternate address by the BestClient team.
-</Note>
+---
+
+## Server Address
+
+<ParamField path="bc_voice_chat_server_address" type="string" default='"managed"'>
+  The address of the voice relay server. The default value `"managed"` tells BestClient to resolve the relay endpoint from BestClient-run infrastructure automatically. You only need to change this if you are self-hosting a compatible voice relay or were given an alternate address by the BestClient team.
+</ParamField>
 
 ---
 

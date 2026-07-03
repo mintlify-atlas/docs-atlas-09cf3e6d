@@ -67,6 +67,32 @@ bc_ingame_menu_animation_ms 220
 
 ---
 
+## Main Menu
+
+The main menu animation controls the hover effect on buttons in the offline main menu.
+
+<CodeGroup>
+```cfg Enable main menu animation
+bc_main_menu_animation 1
+bc_main_menu_animation_speed 12
+```
+
+```cfg Fast hover response
+bc_main_menu_animation 1
+bc_main_menu_animation_speed 30
+```
+</CodeGroup>
+
+<ParamField query="bc_main_menu_animation" type="int" default="1">
+  Toggle the hover animation on main menu buttons. **Default:** `1` (enabled).
+</ParamField>
+
+<ParamField query="bc_main_menu_animation_speed" type="int" default="12">
+  Speed of the main menu button hover animation. Higher values make the hover transition faster. **Range:** `1–50`. **Default:** `12`.
+</ParamField>
+
+---
+
 ## Chat Animations
 
 Chat has three separate animation phases — the passive idle scroll, the open/close transition, and the typing indicator — each independently controllable. The animation type selector additionally changes how messages enter the viewport.

@@ -1,7 +1,7 @@
 ---
-title: "Input Configuration: Modes, Snap Tap, Keystrokes"
+title: "Input Config: Fast Input, Snap Tap, and Keystrokes"
 sidebarTitle: "Input"
-description: "All bc_* config variables for BestClient's input system: Fast Input, Delta Input, Best Input, Saiko+, Snap Tap, 45 Degrees, Small Sens, and keystrokes display."
+description: "All bc_* config variables for BestClient's input system: Fast Input, Delta Input, Best Input, Saiko+, Snap Tap, 45 Degrees, and keystrokes HUD."
 ---
 
 BestClient offers a powerful input pipeline that lets you fine-tune how mouse and keyboard actions are translated into game ticks. The modes below sit between your hardware and the DDNet prediction system, giving you options from simple fast-fire to fully interpolated input with latency compensation. All variables persist in `settings_ddnet.cfg`.
@@ -146,4 +146,34 @@ BestClient can render a live keystrokes overlay showing which keys are currently
 
 <ParamField query="bc_keystrokes_mouse_preset" type="int" default="0">
   Visual layout preset for the mouse overlay. `0` = mouse-dot, `1` = mouse-arrow, `2` = mouse-dot-dot, `3` = mouse-dot-no-box, `4` = mouse-no-movement. Range: `0`–`4`.
+</ParamField>
+
+---
+
+## Auto Team Lock
+
+Automatically lock your team a configurable number of seconds after joining it.
+
+<ParamField query="bc_auto_team_lock" type="int" default="0">
+  Automatically lock your team after joining it. `0` = off, `1` = on.
+</ParamField>
+
+<ParamField query="bc_auto_team_lock_delay" type="int" default="5">
+  Delay in seconds before the team is locked after you join. Range: `0`–`30`.
+</ParamField>
+
+---
+
+## Extend Zoom
+
+<ParamField query="bc_extend_zoom" type="int" default="0">
+  Use `0.5` zoom steps instead of `1` for finer scroll zoom control (e.g. 10, 9.5, 9, 8.5 …). `0` = off, `1` = on.
+</ParamField>
+
+---
+
+## Spectator Notifications
+
+<ParamField query="bc_spec_moved_notify" type="int" default="0">
+  Show a "moved in game" warning when someone hooks or hits your character while you are in spectator mode. `0` = off, `1` = on.
 </ParamField>
